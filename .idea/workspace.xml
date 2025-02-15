@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="67cf3b02-11fe-4601-90d1-e846ab0ca550" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2pfrawKK3Tb2hKDxSmJiZFoLUcK" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="C:\Users\HP\Desktop\Shortcuts\AGRIMART - Front-end\agrimart-frontend\node_modules\typescript\lib" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="67cf3b02-11fe-4601-90d1-e846ab0ca550" name="Changes" comment="" />
+      <created>1733168037596</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733168037596</updated>
+      <workItem from="1733168039426" duration="273000" />
+      <workItem from="1734091855938" duration="10251000" />
+      <workItem from="1734120891082" duration="7501000" />
+      <workItem from="1734158069808" duration="12498000" />
+      <workItem from="1734188369508" duration="20958000" />
+      <workItem from="1734245100599" duration="620000" />
+      <workItem from="1734252056840" duration="13000" />
+      <workItem from="1734387643146" duration="2019000" />
+      <workItem from="1734438760455" duration="13809000" />
+      <workItem from="1734502526535" duration="8712000" />
+      <workItem from="1734611856104" duration="1704000" />
+      <workItem from="1734636017506" duration="595000" />
+      <workItem from="1734674615500" duration="701000" />
+      <workItem from="1734699717945" duration="4737000" />
+      <workItem from="1734770816042" duration="1744000" />
+      <workItem from="1734850267196" duration="590000" />
+      <workItem from="1734939334873" duration="1251000" />
+      <workItem from="1735074730772" duration="786000" />
+      <workItem from="1735078298005" duration="332000" />
+      <workItem from="1735135189839" duration="1187000" />
+      <workItem from="1735226066215" duration="656000" />
+      <workItem from="1736300713688" duration="634000" />
+      <workItem from="1736311431073" duration="290000" />
+      <workItem from="1737231131639" duration="321000" />
+      <workItem from="1737552084338" duration="1244000" />
+      <workItem from="1738385959113" duration="1197000" />
+      <workItem from="1738777254668" duration="1428000" />
+      <workItem from="1738816537849" duration="963000" />
+      <workItem from="1739622507946" duration="4518000" />
+      <workItem from="1739629201848" duration="518000" />
+      <workItem from="1739629736055" duration="439000" />
+      <workItem from="1739630188339" duration="2023000" />
+      <workItem from="1739632239813" duration="345000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/Lahiru" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>
