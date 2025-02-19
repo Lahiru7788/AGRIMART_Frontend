@@ -1,7 +1,7 @@
 "use client"
 
 import React, {useState} from "react";
-const baseUgrl  = process.env.NEXT_APP_BASE_URL;
+
 import axios from 'axios';
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +25,7 @@ const SignupPage: React.FC = () => {
 
     });
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
             ...prevState,
@@ -43,7 +43,7 @@ const SignupPage: React.FC = () => {
         router.push('/');
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) =>  {
         event.preventDefault();
 
         const UserData = {

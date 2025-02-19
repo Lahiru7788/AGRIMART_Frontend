@@ -1,8 +1,6 @@
 "use client"
 
 import React, {useState} from "react";
-import Swal from "sweetalert2";
-const baseUrl  = process.env.NEXT_APP_BASE_URL;
 import axios from 'axios';
 import Image from "next/image";
 import Link from "next/link";
@@ -31,7 +29,7 @@ const LoginPage: React.FC = () => {
         router.push('/');
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>  {
         const { name, value } = e.target;
         setFormData((prevState) => ({
             ...prevState,
@@ -39,7 +37,7 @@ const LoginPage: React.FC = () => {
         }));
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) =>  {
         event.preventDefault();
 
         // const { firstName, lastName, userType } = formData;

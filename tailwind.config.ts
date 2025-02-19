@@ -23,12 +23,7 @@ export default {
         'syne-light': ['Syne Light', 'sans-serif'],
 
       },
-      fontWeight: {
-        normal: 400,
-        medium: 500,
-        semibold: 600,
-        bold: 700,
-      },
+
       backgroundImage: {
         'custom-gradient': 'linear-gradient(to right, rgba(10, 191, 48, 0.33), #22242f 30%)',
 

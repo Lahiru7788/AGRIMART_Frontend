@@ -31,25 +31,12 @@ type NavItem = "SCHEDULE" | "PLAYERS" | "RANKINGS" | "PLAYING EXPERIENCES" | "TI
 export default function HeaderNavbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [activeDropdown, setActiveDropdown] = useState<NavItem | null>(null);
-    const [isHoveringDropdown, setIsHoveringDropdown] = useState(false);
     const [activeNavItem, setActiveNavItem] = useState<NavItem | null>(null);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
-    const handleMouseEnter = (item: NavItem) => {
-        setActiveDropdown(item);
-    };
-
-    const handleMouseLeave = () => {
-        setTimeout(() => {
-            if (!isHoveringDropdown) {
-                setActiveDropdown(null);
-            }
-        }, 200);
-    };
 
     const router = useRouter();
 
@@ -61,14 +48,6 @@ export default function HeaderNavbar() {
         router.push('/signin-page');
     };
 
-    const handleDrawerMouseEnter = () => {
-        setIsHoveringDropdown(true);
-    };
-
-    const handleDrawerMouseLeave = () => {
-        setIsHoveringDropdown(false);
-        setActiveDropdown(null);
-    };
 
     const handleNavItemClick = (item: NavItem) => {
         setActiveNavItem(item);
@@ -152,7 +131,7 @@ export default function HeaderNavbar() {
                         <iframe
                             scrolling="no"
                             frameBorder="0"
-                            clocktype="html5"
+                            // clocktype="html5"
                             style={{
                                 overflow: "hidden",
                                 width:"190px",
@@ -216,8 +195,7 @@ export default function HeaderNavbar() {
                                     ].map((item) => (
                                         <div
                                             key={item}
-                                            onMouseEnter={() => handleMouseEnter(item as NavItem)}
-                                            onMouseLeave={handleMouseLeave}
+
                                             className="relative"
                                         >
                                             <Link
@@ -326,8 +304,7 @@ export default function HeaderNavbar() {
                                     ].map((item) => (
                                         <div
                                             key={item}
-                                            onMouseEnter={() => handleMouseEnter(item as NavItem)}
-                                            onMouseLeave={handleMouseLeave}
+
                                             className="relative"
                                         >
                                             <Link

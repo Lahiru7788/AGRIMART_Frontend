@@ -31,7 +31,7 @@ export default function RootLayout({
       >
       <ToastContainer
           theme="light"
-      fontFamily= "Poppins, sans-serif"/>
+      font-family= "Poppins, sans-serif"/>
         {children}
       </body>
     </html>
