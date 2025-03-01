@@ -10,20 +10,22 @@ import FruitImage from "../../../public/Images/SignUpPage/SignInFruitImage.png";
 import User from "../../../public/Images/SignUpPage/User.png";
 import Password from "../../../public/Images/SignUpPage/Password.png";
 import {useRouter} from "next/navigation";
+import {toast} from "react-toastify";
 
 const LoginPage: React.FC = () => {
 
     const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
         userEmail: "",
-        userType: "",
         userPassword: "",
 
     });
 
 
     const router = useRouter();
+
+    const handleNavigationDashboard= () => {
+        router.push('/farmerDashboard');
+    };
 
     const handleNavigationHome = () => {
         router.push('/');
@@ -51,14 +53,6 @@ const LoginPage: React.FC = () => {
         //     // });
         //     return;}
 
-        const UserData = {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            userEmail: formData.userEmail,
-            userType: formData.userType,
-
-        };
-        console.log(UserData);
 
         const UserCredentialData = {
             userEmail: formData.userEmail,
@@ -66,25 +60,22 @@ const LoginPage: React.FC = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:8081/api/user/registration", UserData);
-            console.log('Data saved:', response.data);
 
-            const credentialResponse = await axios.post("http://localhost:8081/api/user/credentials", UserCredentialData);
+
+            const credentialResponse = await axios.post("http://localhost:8081/api/user/login", UserCredentialData);
             console.log('Data saved:', credentialResponse.data);
 
             setFormData({
-                firstName: "",
-                lastName: "",
-                userType: "",
                 userEmail:"",
                 userPassword: ""
 
             });
-            // Swal.event({
-            //     icon: 'success',
-            //     title: 'Employee has been Successfully added!',
-            //
-            // });
+            toast.success('You have successfully login to the platform!', {
+                position: "top-right",
+                autoClose: 5000,
+            });
+
+
 
         } catch (error) {
             console.error('Error saving data:', error);
@@ -147,7 +138,7 @@ const LoginPage: React.FC = () => {
                                     <div className="relative">
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">
                                  <Image
-                                     src={Password} // Replace with your image path
+                                     src={Password}
                                      alt="Password"
                                      className=" w-[80px] h-[18px] absolute"
                                  />
@@ -167,7 +158,7 @@ const LoginPage: React.FC = () => {
                                 <button
                                     type="submit"
                                     className="w-full h-[45px] font-poppins-light  text-[16px] shadow-md shadow-gray-500 bg-[#5C8F2B] hover:bg-[#B3FDBB] hover:text-[#5C8F2B] text-white font-semibold py-2 rounded-[20px] transition duration-300"
-                                >
+                                    onClick={handleNavigationDashboard}>
                                     <span className="text-shadow-lg">SignIn</span>
                                 </button>
 
