@@ -17,7 +17,7 @@ const Sidebar = () => {
                 <nav className="mt-8 space-y-6 font-poppins-regular">
                     <LinkItem href="/" icon={<Home size={20} />} label="Home" />
                     <LinkItem href="/farmerAddProduct" icon={<PlusCircle size={20} />} label="Add Product" />
-                    <LinkItem href="/farmerUpdateProduct" icon={<Package2 size={20} />} label="Update Product" />
+                    <LinkItem href="/signup-page" icon={<Package2 size={20} />} label="Update Product" />
                     <LinkItem href="/view-order" icon={<Eye size={20} />} label="View Order" />
                     <LinkItem href="/customers" icon={<Users size={20} />} label="Customers" />
                     <LinkItem href="/sales" icon={<LineChart size={20} />} label="Sales" />
@@ -27,7 +27,7 @@ const Sidebar = () => {
 
             {/* Bottom Button */}
             <div className="bg-[#88C34E] mt-[20px] font-poppins-regular rounded-full rounded-bl-none  text-white text-center p-3  text-xs font-semibold">
-                If you need help to make your farming successful, <br />
+                If you want to buy fresh farming products, <br />
                 <Link href="/help" className=" font-coiny mt-[5px] text-[15px]">Click Here</Link>
             </div>
         </aside>

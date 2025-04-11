@@ -25,6 +25,7 @@ const LoginPage: React.FC = () => {
 
     const handleNavigationDashboard= () => {
         router.push('/farmerDashboard');
+
     };
 
     const handleNavigationHome = () => {
@@ -62,7 +63,7 @@ const LoginPage: React.FC = () => {
         try {
 
 
-            const credentialResponse = await axios.post("http://localhost:8081/api/user/login", UserCredentialData);
+            const credentialResponse = await axios.post("http://localhost:8081/api/user/login", UserCredentialData ,{ withCredentials: true } );
             console.log('Data saved:', credentialResponse.data);
 
             setFormData({
@@ -82,6 +83,8 @@ const LoginPage: React.FC = () => {
         }
     };
     return (
+        <div>
+
         <div className="flex  items-center justify-center  min-h-screen bg-white">
             <Image
 
@@ -89,6 +92,7 @@ const LoginPage: React.FC = () => {
                 alt="Fresh Fruits and Vegetables"
                 className=" absolute w-full h-screen"
             />
+
             <div className="flex-1 relative bg-[#B3FDBB] overflow-hidden flex flex-col max-w-[750px] rounded-[20px] items-center justify-center">
                 <div className="relative flex bg-white shadow-lg  ml-[250px] rounded-[20px] w-full max-w-[500px]">
 
@@ -195,6 +199,7 @@ const LoginPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

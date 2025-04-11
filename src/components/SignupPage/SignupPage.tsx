@@ -120,7 +120,7 @@ const SignupPage: React.FC = () => {
                                 <div className="relative">
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">
                                  <Image
-                                     src={User} // Replace with your image path
+                                     src={User}
                                      alt="Vegetables"
                                      className=" w-[80px] h-[18px] absolute"
                                  />
