@@ -4,7 +4,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import Sidebar from "../components/FarmerDashboard/FarmerDashboard";
-import TopNavBar from "../components/FarmerTopNavBar/FarmerTopNavBar";
 import React from "react";
 import { usePathname } from "next/navigation";
 
@@ -40,7 +39,7 @@ export default function RootLayout({
     const pathname = usePathname();
 
     // Define pages where Sidebar should NOT be displayed
-    const noSidebarRoutes = ["/", "/signup-page", "/signin-page", "/farmerDashboard"];
+    const noSidebarRoutes = ["/", "/signup-page", "/signin-page", "/farmerDashboard", "/consumerDashboard", "/supermarketDashboard", "/seeds&FertilizerSellerDashboard", "/consumerAddOrder"];
 
 
     return (
@@ -55,7 +54,7 @@ export default function RootLayout({
         <div className="flex h-screen">
             {/* Show Sidebar only if pathname is NOT in noSidebarRoutes */}
             {!noSidebarRoutes.includes(pathname) && <Sidebar />}
-            {!noSidebarRoutes.includes(pathname) && <TopNavBar />}
+            {/*{!noSidebarRoutes.includes(pathname) && <TopNavBar />}*/}
 
 
 

@@ -242,15 +242,15 @@ const FarmerDashboard: React.FC = () => {
                                 <h2 className="text-xl font-poppins-bold mb-6 text-center mt-8">Add Your Product Details</h2>
 
                                 <div className="grid grid-cols-2 gap-4 mt-4">
-                                    <input
-                                        type="text"
-                                        placeholder="Product Name"
-                                        name="productName"
-                                        value={formData.productName}
-                                        onChange={handleChange}
-                                        className="p-3 bg-white border-t border-r border-l font-poppins-regular shadow-md shadow-gray-200 rounded-[20px] py-2 focus:ring-2 focus:ring-[#5C8F2B] outline-none w-full"
-                                        required
-                                    />
+                                    {/*<input*/}
+                                    {/*    type="text"*/}
+                                    {/*    placeholder="Product Name"*/}
+                                    {/*    name="productName"*/}
+                                    {/*    value={formData.productName}*/}
+                                    {/*    onChange={handleChange}*/}
+                                    {/*    className="p-3 bg-white border-t border-r border-l font-poppins-regular shadow-md shadow-gray-200 rounded-[20px] py-2 focus:ring-2 focus:ring-[#5C8F2B] outline-none w-full"*/}
+                                    {/*    required*/}
+                                    {/*/>*/}
 
                                     <select
                                         className="w-full shadow-md font-poppins-regular border rounded-[20px] px-4 py-2 focus:ring-2 focus:ring-[#5C8F2B] outline-none"

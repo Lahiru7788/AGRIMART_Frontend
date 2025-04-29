@@ -6,10 +6,10 @@ import AGRIMART from "../../../public/Images/HeaderNav/AGRIMART.png";
 import Cart from "../../../public/Images/HeaderNav/icons8-cart-50.png";
 import Logout from "../../../public/Images/HeaderNav/icons8-logout-50.png";
 import Notifications from "../../../public/Images/HeaderNav/icons8-notifications-64.png";
+import Farmer from "../../../public/Images/HeaderNav/icons8-farmer-64.png";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import React from "react";
-import Seed from "../../../public/Images/HeaderNav/icons8-fertilizer-64 (1).png";
 
 const Dashboard = () => {
     return (
@@ -38,18 +38,18 @@ const Sidebar = () => {
                 {/* Menu Items */}
                 <nav className="mt-4 space-y-[2px] font-poppins-regular">
                     <LinkItem href="/" icon={<Home size={20} />} label="Home" />
-                    <LinkItem href="/farmerAddProduct" icon={<PlusCircle size={20} />} label="Add Product" />
-                    <LinkItem href="/farmerUpdateProduct" icon={<Package2 size={20} />} label="Update Product" />
-                    <LinkItem href="/view-order" icon={<Eye size={20} />} label="View Order" />
-                    <LinkItem href="/customers" icon={<Users size={20} />} label="Customers" />
-                    <LinkItem href="/sales" icon={<LineChart size={20} />} label="Sales" />
+                    <LinkItem href="/farmerAddProduct" icon={<PlusCircle size={20} />} label="Add Orders" />
+                    <LinkItem href="/farmerUpdateProduct" icon={<Package2 size={20} />} label="Update Orders" />
+                    <LinkItem href="/view-order" icon={<Eye size={20} />} label="View Product" />
+                    <LinkItem href="/customers" icon={<Users size={20} />} label="Sellers" />
+                    <LinkItem href="/sales" icon={<LineChart size={20} />} label="Purchase History" />
                     <LinkItem href="/reports" icon={<FileText size={20} />} label="Reports" />
                 </nav>
             </div>
 
             {/* Bottom Button */}
             <div className="bg-[#88C34E] mt-[20px] font-poppins-regular rounded-full rounded-bl-none text-white text-center p-3 text-xs font-semibold">
-                If you need help to make your farming successful, <br />
+                If you need to help to buy products your future needs, <br />
                 <Link href="/help" className="font-coiny mt-[5px] text-[15px]">Click Here</Link>
             </div>
         </aside>
@@ -62,10 +62,10 @@ const Topbar = () => {
             {/* Left Section */}
             <div className="flex items-center space-x-">
                 <div className="p-2 bg-white shadow-md rounded-full border-[3px] border-[#88C34E]">
-                    <Image src={Seed} alt="Agrimart Logo" width={40} height={40} />
+                    <Image src={Farmer} alt="Agrimart Logo" width={40} height={40} />
                 </div>
                 <div>
-                    <h2 className="text-lg font-poppins-bold ml-[20px]">Seeds and Fertilizer Seller Dashboard</h2>
+                    <h2 className="text-lg font-poppins-bold ml-[20px]">Supermarket Dashboard</h2>
                     <p className="text-gray-500 font-poppins-regular ml-[20px]">See all your marketing features in here</p>
                 </div>
             </div>

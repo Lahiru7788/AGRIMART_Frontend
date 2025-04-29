@@ -5,27 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67cf3b02-11fe-4601-90d1-e846ab0ca550" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/icons8-camera-50.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/icons8-cart-50.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/icons8-farmer-64.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/icons8-logout-50.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/icons8-notifications-64.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/RootLayout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/farmerAddProduct/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/farmerUpdateProduct/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerAddProduct/FarmerAddProduct.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerUpdateProduct/FarmerUpdateProduct.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/FarmerTopNavBar/FarmerTopNavBar.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/SAndFSellerDashboard/SAndFSellerDashboard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/SAndFTopNavBar/SAndFTopNavBar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerAddOrder/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerDashboard/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seeds&amp;FertilizerSellerDashboard/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketDashboard/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerDashboard/ConsumerDashboard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerAddOrder/ConsumerAddOrder.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketDashboard/SupermarketDashboard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/RootLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/RootLayout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/FarmerDashboard/FarmerDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerDashboard/FarmerDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/FarmerPages/FarmerAddProduct/FarmerAddProduct.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerAddProduct/FarmerAddProduct.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/FarmerPages/FarmerUpdateProduct/FarmerUpdateProduct.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerUpdateProduct/FarmerUpdateProduct.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/LoginPage/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LoginPage/LoginPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SignupPage/SignupPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SignupPage/SignupPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SAndFSellerDashboard/SAndFSellerDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SAndFSellerDashboard/SAndFSellerDashboard.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +120,17 @@
       <workItem from="1742532621420" duration="3520000" />
       <workItem from="1742875955538" duration="800000" />
       <workItem from="1744259791588" duration="12830000" />
-      <workItem from="1744337021033" duration="1934000" />
+      <workItem from="1744337021033" duration="6334000" />
+      <workItem from="1744376836354" duration="5247000" />
+      <workItem from="1745152256310" duration="2409000" />
+      <workItem from="1745259939253" duration="4605000" />
+      <workItem from="1745385404041" duration="9672000" />
+      <workItem from="1745440536976" duration="4356000" />
+      <workItem from="1745500656978" duration="8928000" />
+      <workItem from="1745605210708" duration="6141000" />
+      <workItem from="1745657380172" duration="1222000" />
+      <workItem from="1745823478600" duration="8914000" />
+      <workItem from="1745909326866" duration="9286000" />
     </task>
     <servers />
   </component>
