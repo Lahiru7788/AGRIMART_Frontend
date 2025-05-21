@@ -3,9 +3,16 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
-import Sidebar from "../components/FarmerDashboard/FarmerDashboard";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+
+// Import all sidebar components
+import FarmerSidebar from "../components/FarmerDashboard/FarmerDashboard";
+import ConsumerSidebar from "../components/ConsumerDashboard/ConsumerDashboard";
+import SupermarketSidebar from "../components/SupermarketDashboard/SupermarketDashboard";
+import SeedsFertilizerSellerSidebar from "../components/SAndFSellerDashboard/SAndFSellerDashboard";
+import FarmerTrainerSidebar from "../components/SAndFSellerDashboard/SAndFSellerDashboard";
+// import AdminSidebar from "../components/AdminDashboard/AdminSidebar";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -37,10 +44,78 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     const pathname = usePathname();
+    const [currentDashboard, setCurrentDashboard] = useState<string | null>(null);
 
-    // Define pages where Sidebar should NOT be displayed
-    const noSidebarRoutes = ["/", "/signup-page", "/signin-page", "/farmerDashboard", "/consumerDashboard", "/supermarketDashboard", "/seeds&FertilizerSellerDashboard", "/consumerAddOrder"];
+    // Define routes where no sidebar should be displayed
+    const noSidebarRoutes = ["/", "/signup-page", "/signin-page", "/farmerDashboard", "/consumerDashboard", "/supermarketDashboard", "/seeds&FertilizerSellerDashboard", "/adminDashboard"];
 
+    // Detect dashboard type based on pathname and store in state
+    useEffect(() => {
+        // If we're on a no-sidebar route, clear the current dashboard
+        if (noSidebarRoutes.includes(pathname)) {
+            setCurrentDashboard(null);
+            return;
+        }
+
+        // Set current dashboard type
+        if (pathname.includes('/farmer')) {
+            setCurrentDashboard('farmer');
+        } else if (pathname.includes('/consumer')) {
+            setCurrentDashboard('consumer');
+        } else if (pathname.includes('/supermarket')) {
+            setCurrentDashboard('supermarket');
+        } else if (pathname.includes('/seedsSeller')) {
+            setCurrentDashboard('seedsSeller');
+        } else if (pathname.includes('/farmerTrainer')) {
+            setCurrentDashboard('farmerTrainer');
+        }
+
+        // Handle dashboard selection pages - these should set the dashboard type
+        // but not display the sidebar
+        if (pathname === '/farmerDashboard') {
+            localStorage.setItem('dashboardType', 'farmer');
+        } else if (pathname === '/consumerDashboard') {
+            localStorage.setItem('dashboardType', 'consumer');
+        } else if (pathname === '/supermarketDashboard') {
+            localStorage.setItem('dashboardType', 'supermarket');
+        } else if (pathname === '/seeds&FertilizerSellerDashboard') {
+            localStorage.setItem('dashboardType', 'seedsSeller');
+        } else if (pathname === '/farmerTrainerDashboard') {
+            localStorage.setItem('dashboardType', 'farmerTrainer');
+        }
+
+        // If we can't detect the dashboard type from the URL, use the stored value
+        if (!currentDashboard && !noSidebarRoutes.includes(pathname)) {
+            const storedDashboard = localStorage.getItem('dashboardType');
+            if (storedDashboard) {
+                setCurrentDashboard(storedDashboard);
+            }
+        }
+    }, [pathname, currentDashboard]);
+
+    // Determine which sidebar to show based on the current dashboard
+    const renderSidebar = () => {
+        // No sidebar on specified routes
+        if (noSidebarRoutes.includes(pathname)) {
+            return null;
+        }
+
+        // Render appropriate sidebar based on detected dashboard type
+        switch (currentDashboard) {
+            case 'farmer':
+                return <FarmerSidebar />;
+            case 'consumer':
+                return <ConsumerSidebar />;
+            case 'supermarket':
+                return <SupermarketSidebar />;
+            case 'seedsSeller':
+                return <SeedsFertilizerSellerSidebar />;
+            // case 'admin':
+            //     return <AdminSidebar />;
+            default:
+                return null;
+        }
+    };
 
     return (
         <html lang="en">
@@ -52,15 +127,11 @@ export default function RootLayout({
         </head>
         <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}>
         <div className="flex h-screen">
-            {/* Show Sidebar only if pathname is NOT in noSidebarRoutes */}
-            {!noSidebarRoutes.includes(pathname) && <Sidebar />}
-            {/*{!noSidebarRoutes.includes(pathname) && <TopNavBar />}*/}
-
-
+            {/* Dynamic sidebar rendering */}
+            {renderSidebar()}
 
             {/* Main Content Area */}
-            <main className={`${noSidebarRoutes.includes(pathname) ? "w-full" : "ml-64 flex-1"} bg-gray-100`}>
-
+            <main className={`${noSidebarRoutes.includes(pathname) || !currentDashboard ? "w-full" : "ml-64 flex-1"} bg-gray-100`}>
                 {children}
             </main>
         </div>

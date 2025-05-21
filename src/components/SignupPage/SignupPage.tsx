@@ -95,7 +95,7 @@ const SignupPage: React.FC = () => {
 
 
 
-            <div className="flex-1 relative bg-custom-gradient overflow-hidden flex flex-col max-w-[750px] rounded-[20px] items-center justify-center">
+            <div className="flex-1 relative bg-[#B3FDBB] overflow-hidden flex flex-col max-w-[750px] rounded-[20px] items-center justify-center">
             <div className="relative flex bg-white shadow-lg  mr-[250px] rounded-[20px] w-full max-w-[500px]">
 
 

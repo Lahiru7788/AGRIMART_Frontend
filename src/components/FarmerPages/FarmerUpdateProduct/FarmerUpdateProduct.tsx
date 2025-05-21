@@ -5,6 +5,7 @@ import axios from "axios";
 import { Pagination } from "@mui/material";
 import Image from "next/image";
 import {toast} from "react-toastify";
+import { getWithExpiry } from "../../../../auth-utils";
 
 const CategoryDropdown = ({ categories, onCategoryChange }) => {
     return (
@@ -84,6 +85,7 @@ const ProductCard = ({ product, onUpdateClick }) => {
                 position: "top-right",
                 autoClose: 5000,
             });
+            window.location.reload();
 
         } catch (error) {
             console.error("Error deleting product:", error);
@@ -126,7 +128,7 @@ const ProductCard = ({ product, onUpdateClick }) => {
         : "bg-white shadow-md rounded-[20px] p-4 w-80 relative";
 
     return (
-        <div className={`${cardShadowClass} w-[327px] ml-[8px] mt-[-30px] p-3`}>
+        <div className={`${cardShadowClass} w-[325px] ml-[8px] mt-[-30px] p-3`}>
             {product.hasOffer && (
                 <div
                     className="absolute top-2 right-2 bg-[#88C34E] font-poppins-regular text-white px-2 py-1 rounded-lg cursor-pointer text-sm hover:bg-red-500 transition-colors"
@@ -846,10 +848,22 @@ const ProductList = () => {
         fetchProducts();
     };
 
+    // Modified fetchProducts function to use userID from getWithExpiry
+    // Modified fetchProducts function to use userID from getWithExpiry
     const fetchProducts = async () => {
         try {
+            // Get userID from localStorage using getWithExpiry
+            const userID = getWithExpiry("userID");
+
+
+            if (!userID) {
+                console.error("User ID not found. User might not be logged in.");
+                return;
+            }
+
+            // Use the userID in the API endpoint
             const response = await axios.get(
-                "http://localhost:8081/api/user/viewFarmerProducts"
+                `http://localhost:8081/api/user/viewFarmerProducts/${userID}`
             );
 
             const productList = response.data.farmerProductGetResponse || [];

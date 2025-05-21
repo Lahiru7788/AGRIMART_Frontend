@@ -32,6 +32,16 @@ const LoginPage: React.FC = () => {
         }));
     };
 
+    // Helper function to store user data with expiration
+    const storeWithExpiry = (key, value, ttl) => {
+        const now = new Date();
+        const item = {
+            value: value,
+            expiry: now.getTime() + ttl,
+        };
+        sessionStorage.setItem(key, JSON.stringify(item));
+    };
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -51,14 +61,23 @@ const LoginPage: React.FC = () => {
 
             // Check if the login was successful
             if (credentialResponse.data.status === "200" && credentialResponse.data.message === "Login Success") {
-                // Extract the user type from the response
-                const userType = credentialResponse.data.credentialDtoList[0]?.user?.userType;
+                // Extract the user data from the response
+                const userData = credentialResponse.data.credentialDtoList[0]?.user;
+                const userType = userData?.userType;
+                const userID = userData?.userID;
+                const userName = `${userData?.firstName} ${userData?.lastName}`;
 
-                // Store user information in localStorage or context if needed
-                localStorage.setItem('userType', userType);
-                localStorage.setItem('userEmail', formData.userEmail);
-                localStorage.setItem('userName', `${credentialResponse.data.credentialDtoList[0]?.user?.firstName} ${credentialResponse.data.credentialDtoList[0]?.user?.lastName}`);
-                localStorage.setItem('userId', credentialResponse.data.credentialDtoList[0]?.user?.userID);
+                // Set expiration time to 24 hours (in milliseconds)
+                const expiryTime = 24 * 60 * 60 * 1000;
+
+                // Store user information in sessionStorage with expiration
+                storeWithExpiry('userType', userType, expiryTime);
+                storeWithExpiry('userEmail', formData.userEmail, expiryTime);
+                storeWithExpiry('userName', userName, expiryTime);
+                storeWithExpiry('userID', userID, expiryTime);
+
+                // Also store login timestamp for reference
+                storeWithExpiry('loginTimestamp', new Date().toISOString(), expiryTime);
 
                 // Reset form
                 setFormData({

@@ -5,20 +5,81 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67cf3b02-11fe-4601-90d1-e846ab0ca550" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/consumerAddOrder/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/consumerDashboard/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/seeds&amp;FertilizerSellerDashboard/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/supermarketDashboard/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ConsumerDashboard/ConsumerDashboard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerAddOrder/ConsumerAddOrder.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/SupermarketDashboard/SupermarketDashboard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth-utils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/Combo offer-rafiki.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/best-agriculture-courses.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/consumerorders.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/desktop.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/fproduct.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/icons8-buyer-50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/icons8-supermarket-64.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/sfproduct.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Images/HeaderNav/supermarketorders.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerOrderUpdate/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerProfile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerProfileSettings/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerUpdateOrder/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewFarmerProducts/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewFarmerProfile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewProducts/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewSFProducts/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerProfile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerProfileSettings/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewConsumerOrders/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewHelp/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewOrders/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewSFProducts/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewSupermarketOrders/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seedsSellerAddProduct/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seedsSellerProfile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seedsSellerProfileSettings/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seedsSellerUpdateProduct/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seedsSellerViewFarmerProducts/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketAddOrder/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketProfile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketProfileSettings/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketUpdateOrder/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewFarmerProducts/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewProducts/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewSFProducts/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerUpdateOrder/ConsumerUpdateOrder.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewFarmerProducts/ConsumerViewFarmerProducts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewFarmerProfile/ConsumerViewFarmerProfile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewProducts/ConsumerViewProducts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewSFProducts/ConsumerViewSFProducts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerProfile/ConsumerProfile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerProfileSettings/ConsumerProfileSettings.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewConsumerOrders/FarmerViewConsumerOrders.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewHelp/FarmerViewHelp.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewOrders/FarmerViewOrders.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewSFProducts/FarmerViewSFProducts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewSupermarketOrders/FarmerViewSupermarketOrders.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Logout/Logout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ProfileSettings/ProfileSettings.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SeedsSellerPages/SeedsSellerAddProduct/SeedsSellerAddProduct.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SeedsSellerPages/SeedsSellerUpdateProduct/SeedsSellerUpdateProduct.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SeedsSellerPages/SeedsSellerViewFarmerProducts/SeedsSellerViewFarmerProducts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SeedsSellerProfileSettings/SeedsSellerProfileSettings.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SeedsSellerUserProfile/SeedsSellerUserProfile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketAddOrder/SupermarketAddOrder.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketUpdateOrder/SupermarketUpdateOrder.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewFarmerProducts/SupermarketViewFarmerProducts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewProducts/SupermarketViewProducts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewSFProducts/SupermarketViewSFProducts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketProfile/SupermarketProfile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketProfileSettings/SupermarketProfileSettings.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/UserProfile/UserProfile.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/RootLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/RootLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ConsumerDashboard/ConsumerDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ConsumerDashboard/ConsumerDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerAddOrder/ConsumerAddOrder.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerAddOrder/ConsumerAddOrder.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/FarmerDashboard/FarmerDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerDashboard/FarmerDashboard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/FarmerPages/FarmerAddProduct/FarmerAddProduct.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerAddProduct/FarmerAddProduct.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/FarmerPages/FarmerUpdateProduct/FarmerUpdateProduct.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerUpdateProduct/FarmerUpdateProduct.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/LoginPage/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LoginPage/LoginPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/SAndFSellerDashboard/SAndFSellerDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SAndFSellerDashboard/SAndFSellerDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SignupPage/SignupPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SignupPage/SignupPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SupermarketDashboard/SupermarketDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SupermarketDashboard/SupermarketDashboard.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,13 +107,44 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../AGRIMART - Back-end/AGRIMART" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="ts.external.directory.path" value="C:\Users\HP\Downloads\AGRIMART - Front-end\agrimart-frontend\node_modules\typescript\lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\HP\Downloads\AGRIMART - Front-end\agrimart-frontend\src\components\SeedsSellerPages\SeedsSellerAddProduct" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="C:/Users/HP/Downloads/AGRIMART - Front-end/agrimart-frontend" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" value="" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.C:/Users/HP/Downloads/AGRIMART - Front-end/agrimart-frontend" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -130,7 +222,26 @@
       <workItem from="1745605210708" duration="6141000" />
       <workItem from="1745657380172" duration="1222000" />
       <workItem from="1745823478600" duration="8914000" />
-      <workItem from="1745909326866" duration="9286000" />
+      <workItem from="1745909326866" duration="11100000" />
+      <workItem from="1745963309089" duration="2377000" />
+      <workItem from="1746218853943" duration="4876000" />
+      <workItem from="1746297820021" duration="6927000" />
+      <workItem from="1746390997634" duration="143000" />
+      <workItem from="1746391270633" duration="1317000" />
+      <workItem from="1746458957721" duration="11595000" />
+      <workItem from="1746510906887" duration="29209000" />
+      <workItem from="1746596459581" duration="10472000" />
+      <workItem from="1746631175091" duration="14703000" />
+      <workItem from="1746704778329" duration="6753000" />
+      <workItem from="1746750006268" duration="939000" />
+      <workItem from="1746773999103" duration="2767000" />
+      <workItem from="1747066211287" duration="6310000" />
+      <workItem from="1747116621418" duration="1567000" />
+      <workItem from="1747158068825" duration="9612000" />
+      <workItem from="1747234168108" duration="1741000" />
+      <workItem from="1747372469061" duration="1314000" />
+      <workItem from="1747559856796" duration="25000" />
+      <workItem from="1747689916690" duration="2000" />
     </task>
     <servers />
   </component>

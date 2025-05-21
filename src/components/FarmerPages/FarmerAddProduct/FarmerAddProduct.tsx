@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import Camera from "../../../../public/Images/HeaderNav/icons8-camera-50.png"
 import Logout from "../../../../public/Images/HeaderNav/icons8-logout-50.png";
 import AddProduct from "../../../../public/Images/HeaderNav/Product quality-amico.svg"
+import AddOffer from "../../../../public/Images/HeaderNav/Combo offer-rafiki.svg";
 
 const FarmerDashboard: React.FC = () => {
     // State for managing form display
@@ -393,15 +394,15 @@ const FarmerDashboard: React.FC = () => {
                 return (
                     <div className="flex gap-6">
                         {/* Left side illustration for Step 3 */}
-                        <div className="w-64 flex flex-col items-center justify-center">
-                            <div className="w-64 h-64 bg-[#F3F9EC] rounded-xl shadow-md flex items-center justify-center p-4">
-                                <img src="/api/placeholder/240/240" alt="Add Offer" className="max-w-full max-h-full" />
+                        <div className="w-32 flex flex-col items-center justify-center">
+                            <div className="w-64 h-[470px] bg-[#B3FDBB] rounded-xl shadow-md flex items-center justify-center p-4">
+                                <Image src={AddOffer} alt="Add Offer" className="max-w-full max-h-full mb-[-250px]" />
                             </div>
-                            <p className="text-center mt-4 font-poppins-regular text-gray-700">Create special offers to attract more customers</p>
+
                         </div>
 
                         {/* Offers Form - Step 3 */}
-                        <form onSubmit={handleSubmitOffer} className="flex-1">
+                        <form onSubmit={handleSubmitOffer} className="flex-1 mr-[-70px]">
                             <div className="bg-white p-6 rounded-xl shadow-lg relative">
                                 {/* Step Indicator */}
                                 <div className="absolute top-4 left-4 flex items-center">

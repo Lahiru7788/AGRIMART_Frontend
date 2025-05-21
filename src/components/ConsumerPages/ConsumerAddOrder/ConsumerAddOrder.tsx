@@ -6,24 +6,25 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import Camera from "../../../../public/Images/HeaderNav/icons8-camera-50.png"
 import Logout from "../../../../public/Images/HeaderNav/icons8-logout-50.png";
-import AddProduct from "../../../../public/Images/HeaderNav/Product quality-amico.svg"
+import AddOrder from "../../../../public/Images/HeaderNav/Product quality-amico.svg"
+import AddOffer from "../../../../public/Images/HeaderNav/Combo offer-rafiki.svg"
 
-const FarmerDashboard: React.FC = () => {
+const ConsumerOrderDashboard: React.FC = () => {
     // State for managing form display
     const [currentStep, setCurrentStep] = useState(1);
-    const [productId, setProductId] = useState<string | null>(null);
+    const [orderId, setOrderId] = useState<string | null>(null);
 
     // Image handling state
     const [image, setImage] = useState<string | null>(null);
     const [file, setFile] = useState<File | null>(null);
 
-    // Product form data
+    // Order form data
     const [formData, setFormData] = useState({
         productName: "",
         productImage: "",
         price: "",
-        availableQuantity: "",
-        minimumQuantity: "",
+        requiredQuantity: "",
+        requiredTime: "",
         description: "",
         addedDate: "",
         productCategory: "",
@@ -66,13 +67,13 @@ const FarmerDashboard: React.FC = () => {
             const formData = new FormData();
             formData.append("productImage", file);
 
-            // Add the productId if available to link the image to the product
-            if (productId) {
-                formData.append("productId", productId);
+            // Add the orderId if available to link the image to the order
+            if (orderId) {
+                formData.append("orderId", orderId);
             }
 
             const response = await axios.post(
-                "http://localhost:8081/api/user/farmerProductImage",
+                "http://localhost:8081/api/user/cAddOrderProductImage",
                 formData,
                 {
                     headers: {
@@ -84,7 +85,7 @@ const FarmerDashboard: React.FC = () => {
 
             console.log("Image upload success:", response.data);
 
-            toast.success('Product image uploaded successfully!', {
+            toast.success('Order image uploaded successfully!', {
                 position: "top-right",
                 autoClose: 5000,
             });
@@ -103,7 +104,7 @@ const FarmerDashboard: React.FC = () => {
         }
     };
 
-    // Handle product form changes
+    // Handle order form changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
@@ -121,37 +122,37 @@ const FarmerDashboard: React.FC = () => {
         }));
     };
 
-    // Submit product details
-    const handleSubmitProduct = async (event: React.FormEvent<HTMLFormElement>) => {
+    // Submit order details
+    const handleSubmitOrder = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const ProductData = {
+        const OrderData = {
             productName: formData.productName,
             price: formData.price,
-            availableQuantity: formData.availableQuantity,
-            minimumQuantity: formData.minimumQuantity,
+            requiredQuantity: formData.requiredQuantity,
+            requiredTime: formData.requiredTime,
             description: formData.description,
             addedDate: formData.addedDate,
             productCategory: formData.productCategory,
         };
 
-        console.log("Submitting product data:", ProductData);
+        console.log("Submitting order data:", OrderData);
 
         try {
             const response = await axios.post(
-                "http://localhost:8081/api/user/farmerProducts",
-                ProductData,
+                "http://localhost:8081/api/user/consumerAddOrders",
+                OrderData,
                 { withCredentials: true }
             );
 
-            console.log('Product saved:', response.data);
+            console.log('Order saved:', response.data);
 
-            // Save the product ID to use for image upload
+            // Save the order ID to use for image upload
             if (response.data && response.data.id) {
-                setProductId(response.data.id);
+                setOrderId(response.data.id);
             }
 
-            toast.success('Product details saved! Now you can add an image.', {
+            toast.success('Order details saved! Now you can add an image.', {
                 position: "top-right",
                 autoClose: 5000,
             });
@@ -160,8 +161,8 @@ const FarmerDashboard: React.FC = () => {
             setCurrentStep(2);
 
         } catch (error) {
-            console.error('Error saving product:', error);
-            toast.error('Failed to add product. Please try again.', {
+            console.error('Error saving order:', error);
+            toast.error('Failed to add order. Please try again.', {
                 position: "top-right",
                 autoClose: 5000,
             });
@@ -180,7 +181,7 @@ const FarmerDashboard: React.FC = () => {
 
         try {
             const OfferResponse = await axios.post(
-                "http://localhost:8081/api/user/farmerOffers",
+                "http://localhost:8081/api/user/consumerOffers",
                 OfferData,
                 { withCredentials: true }
             );
@@ -204,8 +205,8 @@ const FarmerDashboard: React.FC = () => {
                 productName: "",
                 productImage: "",
                 price: "",
-                availableQuantity: "",
-                minimumQuantity: "",
+                requiredQuantity: "",
+                requiredTime: "",
                 description: "",
                 addedDate: "",
                 productCategory: "",
@@ -228,29 +229,29 @@ const FarmerDashboard: React.FC = () => {
                         {/* Left side illustration for Step 1 */}
 
 
-                        {/* Product Details Form - Step 1 */}
-                        <form onSubmit={handleSubmitProduct} className="flex-1 ml-[-70px]">
+                        {/* Order Details Form - Step 1 */}
+                        <form onSubmit={handleSubmitOrder} className="flex-1 ml-[-70px]">
                             <div className="bg-white p-6 w-[815px] rounded-xl shadow-lg flex-1 relative">
                                 {/* Step Indicator */}
                                 <div className="absolute top-4 left-4 flex items-center">
                                     <div className="bg-[#88C34E] text-white rounded-full w-8 h-8 flex items-center justify-center font-poppins-regular">
                                         1
                                     </div>
-                                    <p className="ml-2 font-poppins-regular">Step 1 of 3 : Add Product Details</p>
+                                    <p className="ml-2 font-poppins-regular">Step 1 of 3 : Add Order Details</p>
                                 </div>
 
-                                <h2 className="text-xl font-poppins-bold mb-6 text-center mt-8">Add Your Product Details</h2>
+                                <h2 className="text-xl font-poppins-bold mb-6 text-center mt-8">Add Your Order Details</h2>
 
                                 <div className="grid grid-cols-2 gap-4 mt-4">
-                                    {/*<input*/}
-                                    {/*    type="text"*/}
-                                    {/*    placeholder="Product Name"*/}
-                                    {/*    name="productName"*/}
-                                    {/*    value={formData.productName}*/}
-                                    {/*    onChange={handleChange}*/}
-                                    {/*    className="p-3 bg-white border-t border-r border-l font-poppins-regular shadow-md shadow-gray-200 rounded-[20px] py-2 focus:ring-2 focus:ring-[#5C8F2B] outline-none w-full"*/}
-                                    {/*    required*/}
-                                    {/*/>*/}
+                                    <input
+                                        type="text"
+                                        placeholder="Product Name"
+                                        name="productName"
+                                        value={formData.productName}
+                                        onChange={handleChange}
+                                        className="p-3 bg-white border-t border-r border-l font-poppins-regular shadow-md shadow-gray-200 rounded-[20px] py-2 focus:ring-2 focus:ring-[#5C8F2B] outline-none w-full"
+                                        required
+                                    />
 
                                     <select
                                         className="w-full shadow-md font-poppins-regular border rounded-[20px] px-4 py-2 focus:ring-2 focus:ring-[#5C8F2B] outline-none"
@@ -267,7 +268,7 @@ const FarmerDashboard: React.FC = () => {
 
                                     <input
                                         type="number"
-                                        placeholder="Price (without offer)"
+                                        placeholder="Price (willing to pay)"
                                         name="price"
                                         value={formData.price}
                                         onChange={handleChange}
@@ -286,19 +287,19 @@ const FarmerDashboard: React.FC = () => {
 
                                     <input
                                         type="number"
-                                        placeholder="Available Quantity (Kg)"
-                                        name="availableQuantity"
-                                        value={formData.availableQuantity}
+                                        placeholder="Required Quantity (Kg)"
+                                        name="requiredQuantity"
+                                        value={formData.requiredQuantity}
                                         onChange={handleChange}
                                         className="p-3 w-full bg-white border font-poppins-regular shadow-md shadow-gray-300 rounded-[20px] py-2 focus:ring-2 focus:ring-[#5C8F2B] outline-none"
                                         required
                                     />
 
                                     <input
-                                        type="number"
-                                        placeholder="Minimum Quantity (Kg)"
-                                        name="minimumQuantity"
-                                        value={formData.minimumQuantity}
+                                        type="text"
+                                        placeholder="Required Time (e.g., 3 days, 1 week)"
+                                        name="requiredTime"
+                                        value={formData.requiredTime}
                                         onChange={handleChange}
                                         className="p-3 w-full bg-white border font-poppins-regular shadow-md shadow-gray-300 rounded-[20px] py-2 focus:ring-2 focus:ring-[#5C8F2B] outline-none"
                                         required
@@ -318,13 +319,13 @@ const FarmerDashboard: React.FC = () => {
                                     type="submit"
                                     className="w-full h-[45px] mt-[40px] font-poppins-light text-[16px] shadow-md shadow-gray-500 bg-[#88C34E] hover:bg-[#B3FDBB] hover:text-[#5C8F2B] text-white font-semibold py-2 rounded-[20px] transition duration-300"
                                 >
-                                    Next: Add Product Image
+                                    Next: Add Order Image
                                 </button>
                             </div>
                         </form>
                         <div className="w-32 flex flex-col items-center justify-center ">
                             <div className="w-64 h-[460px] bg-[#B3FDBB] rounded-xl shadow-md flex items-center justify-center p-4 ">
-                                <Image src={AddProduct} alt="Add Product"  className="max-w-full max-h-full  relative mb-[-210px] " />
+                                <Image src={AddOrder} alt="Add Order"  className="max-w-full max-h-full  relative mb-[-210px] " />
                             </div>
                         </div>
                     </div>
@@ -338,10 +339,10 @@ const FarmerDashboard: React.FC = () => {
                             <div className="bg-[#88C34E] text-white rounded-full w-8 h-8 flex items-center justify-center font-poppins-regular">
                                 2
                             </div>
-                            <span className="ml-2 font-poppins-regular">Step 2 of 3 : Add Product Image</span>
+                            <span className="ml-2 font-poppins-regular">Step 2 of 3 : Add Order Image</span>
                         </div>
 
-                        <h2 className="text-xl font-poppins-bold mb-6 text-center mt-8">Add Product Image</h2>
+                        <h2 className="text-xl font-poppins-bold mb-6 text-center mt-8">Add Order Image</h2>
 
                         <div className="flex justify-center mb-6">
                             <div
@@ -393,15 +394,15 @@ const FarmerDashboard: React.FC = () => {
                 return (
                     <div className="flex gap-6">
                         {/* Left side illustration for Step 3 */}
-                        <div className="w-64 flex flex-col items-center justify-center">
-                            <div className="w-64 h-64 bg-[#F3F9EC] rounded-xl shadow-md flex items-center justify-center p-4">
-                                <img src="/api/placeholder/240/240" alt="Add Offer" className="max-w-full max-h-full" />
+                        <div className="w-32 flex flex-col items-center justify-center">
+                            <div className="w-64 h-[470px] bg-[#B3FDBB] rounded-xl shadow-md flex items-center justify-center p-4">
+                                <Image src={AddOffer} alt="Add Offer" className="max-w-full max-h-full mb-[-250px]" />
                             </div>
-                            <p className="text-center mt-4 font-poppins-regular text-gray-700">Create special offers to attract more customers</p>
+
                         </div>
 
                         {/* Offers Form - Step 3 */}
-                        <form onSubmit={handleSubmitOffer} className="flex-1">
+                        <form onSubmit={handleSubmitOffer} className="flex-1 mr-[-70px]">
                             <div className="bg-white p-6 rounded-xl shadow-lg relative">
                                 {/* Step Indicator */}
                                 <div className="absolute top-4 left-4 flex items-center">
@@ -479,7 +480,7 @@ const FarmerDashboard: React.FC = () => {
                         <div className={`rounded-full w-10 h-10 flex items-center justify-center font-poppins-regular ${currentStep >= 1 ? 'bg-[#88C34E] text-white' : 'bg-gray-300 text-gray-600'}`}>
                             1
                         </div>
-                        <span className="ml-2 font-poppins-regular">Product Details</span>
+                        <span className="ml-2 font-poppins-regular">Order Details</span>
                     </div>
                     <div className={`h-1 w-64 ${currentStep >= 2 ? 'bg-[#88C34E]' : 'bg-gray-300'}`}></div>
                     <div className="flex items-center">
@@ -501,21 +502,8 @@ const FarmerDashboard: React.FC = () => {
             <div className="max-w-4xl mx-auto">
                 {renderStepContent()}
             </div>
-
-            {/*/!* View Products Button *!/*/}
-            {/*<div className="max-w-4xl mx-auto mt-8">*/}
-            {/*    <div className="bg-white p-6 rounded-xl shadow-lg">*/}
-            {/*        <h2 className="text-lg font-poppins-bold">View your products</h2>*/}
-            {/*        <button*/}
-            {/*            type="button"*/}
-            {/*            className="w-full h-[45px] mt-[10px] font-poppins-light text-[16px] shadow-md shadow-gray-500 bg-[#88C34E] hover:bg-[#B3FDBB] hover:text-[#5C8F2B] text-white font-semibold py-2 rounded-[20px] transition duration-300"*/}
-            {/*        >*/}
-            {/*            View Products*/}
-            {/*        </button>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
         </div>
     );
 }
 
-export default FarmerDashboard;
+export default ConsumerOrderDashboard;
