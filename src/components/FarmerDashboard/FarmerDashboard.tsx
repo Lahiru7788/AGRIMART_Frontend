@@ -5,13 +5,13 @@ import { Home, PlusCircle, Package2, Eye, Users, LineChart, FileText, User } fro
 import AGRIMART from "../../../public/Images/HeaderNav/AGRIMART.png";
 import Cart from "../../../public/Images/HeaderNav/icons8-cart-50.png";
 import Logout from "../../../public/Images/HeaderNav/icons8-logout-50.png";
-import Notifications from "../../../public/Images/HeaderNav/icons8-notifications-64.png";
 import Farmer from "../../../public/Images/HeaderNav/icons8-farmer-64.png";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useLogout } from "../Logout/Logout"; // Import the logout hook
-import axios from "axios"; // Import axios
+import { useLogout } from "../Logout/Logout";
+import axios from "axios";
+import NotificationSystem from "../FarmerPages/FarmerNotifications/FarmerNotifications"; // Import the notification component
 
 const Dashboard = () => {
     return (
@@ -59,7 +59,7 @@ const Sidebar = () => {
 };
 
 const Topbar = () => {
-    const { handleLogout } = useLogout(); // Use the logout hook
+    const { handleLogout } = useLogout();
     const [userName, setUserName] = useState("User");
     const [userID, setUserID] = useState(null);
     const [profileImage, setProfileImage] = useState(null);
@@ -151,9 +151,9 @@ const Topbar = () => {
                     >
                         <Image src={Logout} alt="Logout" width={25} height={25} />
                     </button>
-                    <button className="p-[3px] bg-white shadow-md rounded-full hover:invert">
-                        <Image src={Notifications} alt="Notifications" width={35} height={35} />
-                    </button>
+
+                    {/* Notification System Component */}
+                    <NotificationSystem />
 
                     {/* Profile Link with enhanced profile image display */}
                     <Link
