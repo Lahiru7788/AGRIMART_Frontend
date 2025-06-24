@@ -11,7 +11,7 @@ import FarmerSidebar from "../components/FarmerDashboard/FarmerDashboard";
 import ConsumerSidebar from "../components/ConsumerDashboard/ConsumerDashboard";
 import SupermarketSidebar from "../components/SupermarketDashboard/SupermarketDashboard";
 import SeedsFertilizerSellerSidebar from "../components/SAndFSellerDashboard/SAndFSellerDashboard";
-import FarmerTrainerSidebar from "../components/SAndFSellerDashboard/SAndFSellerDashboard";
+import TrainerSidebar from "../components/TrainerDashboard/TrainerDashboard";
 // import AdminSidebar from "../components/AdminDashboard/AdminSidebar";
 
 const geistSans = localFont({
@@ -47,7 +47,7 @@ export default function RootLayout({
     const [currentDashboard, setCurrentDashboard] = useState<string | null>(null);
 
     // Define routes where no sidebar should be displayed
-    const noSidebarRoutes = ["/", "/signup-page", "/signin-page", "/farmerDashboard", "/consumerDashboard", "/supermarketDashboard", "/seeds&FertilizerSellerDashboard", "/adminDashboard"];
+    const noSidebarRoutes = ["/", "/signup-page", "/signin-page", "/forgotPassword-page", "/farmerDashboard", "/consumerDashboard", "/supermarketDashboard", "/seeds&FertilizerSellerDashboard", "/trainerDashboard"];
 
     // Detect dashboard type based on pathname and store in state
     useEffect(() => {
@@ -66,8 +66,8 @@ export default function RootLayout({
             setCurrentDashboard('supermarket');
         } else if (pathname.includes('/seedsSeller')) {
             setCurrentDashboard('seedsSeller');
-        } else if (pathname.includes('/farmerTrainer')) {
-            setCurrentDashboard('farmerTrainer');
+        } else if (pathname.includes('/trainer')) {
+            setCurrentDashboard('trainer');
         }
 
         // Handle dashboard selection pages - these should set the dashboard type
@@ -80,8 +80,8 @@ export default function RootLayout({
             localStorage.setItem('dashboardType', 'supermarket');
         } else if (pathname === '/seeds&FertilizerSellerDashboard') {
             localStorage.setItem('dashboardType', 'seedsSeller');
-        } else if (pathname === '/farmerTrainerDashboard') {
-            localStorage.setItem('dashboardType', 'farmerTrainer');
+        } else if (pathname === '/trainerDashboard') {
+            localStorage.setItem('dashboardType', 'trainer');
         }
 
         // If we can't detect the dashboard type from the URL, use the stored value
@@ -110,8 +110,8 @@ export default function RootLayout({
                 return <SupermarketSidebar />;
             case 'seedsSeller':
                 return <SeedsFertilizerSellerSidebar />;
-            // case 'admin':
-            //     return <AdminSidebar />;
+             case 'trainer':
+                return <TrainerSidebar />;
             default:
                 return null;
         }

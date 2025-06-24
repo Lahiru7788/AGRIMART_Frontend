@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bell, X, ShoppingCart, User, Calendar, DollarSign, Package, Eye, CheckCircle, Clock } from 'lucide-react';
+import { Bell, X, ShoppingCart, User, Calendar, DollarSign, Package, Eye, CheckCircle, Clock, XCircle, AlertTriangle } from 'lucide-react';
 import axios from 'axios';
 import { getWithExpiry } from '../../../../auth-utils';
 import { useRouter } from 'next/navigation';
@@ -10,11 +10,27 @@ interface OrderUser {
     firstName: string;
     lastName: string;
     userEmail: string;
+    userType?: string;
 }
 
 interface FarmerProduct {
     user: OrderUser;
     productCategory?: string;
+}
+
+interface SFProduct {
+    productID: number;
+    productName: string;
+    price: number;
+    availableQuantity: number;
+    minimumQuantity: number;
+    description: string;
+    addedDate: string;
+    productCategory: string;
+    user: OrderUser;
+    active: boolean;
+    quantityLowered: boolean;
+    deleted: boolean;
 }
 
 interface RawOrder {
@@ -35,6 +51,25 @@ interface RawOrder {
     productCategory?: string;
 }
 
+interface FarmerSeedsOrder {
+    orderID: number;
+    productID: number;
+    productName: string;
+    price: number;
+    requiredQuantity: number;
+    description: string;
+    addedDate: string;
+    productCategory: string;
+    user: OrderUser;
+    sfProduct: SFProduct;
+    active: boolean;
+    confirmed: boolean;
+    addedToCart: boolean;
+    removedFromCart: boolean;
+    rejected: boolean;
+    paid: boolean;
+}
+
 interface NotificationData {
     id: string;
     type: string;
@@ -50,7 +85,10 @@ interface NotificationData {
     rejected: boolean;
     description: string;
     category: string;
-    rawOrder: RawOrder;
+    rawOrder?: RawOrder;
+    farmerSeedsOrder?: FarmerSeedsOrder;
+    productID?: number;
+    sellerName?: string;
 }
 
 interface ApiResponse {
@@ -58,15 +96,18 @@ interface ApiResponse {
     sfOrderGetResponse?: RawOrder[];
     supermarketOrderGetResponse?: RawOrder[];
     trainerOrderGetResponse?: RawOrder[];
+    farmerSeedsOrderGetResponse?: FarmerSeedsOrder[];
 }
 
 const NotificationSystem = () => {
     const [newOrderNotifications, setNewOrderNotifications] = useState<NotificationData[]>([]);
     const [paidOrderNotifications, setPaidOrderNotifications] = useState<NotificationData[]>([]);
+    const [confirmedOrderNotifications, setConfirmedOrderNotifications] = useState<NotificationData[]>([]);
+    const [rejectedOrderNotifications, setRejectedOrderNotifications] = useState<NotificationData[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState<'new' | 'paid'>('new');
+    const [activeTab, setActiveTab] = useState<'new' | 'paid' | 'confirmed' | 'rejected'>('new');
     const panelRef = useRef<HTMLDivElement>(null);
     const bellRef = useRef<HTMLButtonElement>(null);
     const router = useRouter();
@@ -101,12 +142,13 @@ const NotificationSystem = () => {
                 return;
             }
 
-            // Fetch from all four APIs
+            // Fetch from all five APIs (including farmer seeds orders)
             const apiEndpoints = [
                 `http://localhost:8081/api/user/viewConsumerOrdersByFarmerID/${userID}`,
                 `http://localhost:8081/api/user/viewSFOrdersByFarmerID/${userID}`,
                 `http://localhost:8081/api/user/viewSupermarketOrdersByFarmerID/${userID}`,
-                `http://localhost:8081/api/user/viewTrainerOrdersByFarmerID/${userID}`
+                `http://localhost:8081/api/user/viewTrainerOrdersByFarmerID/${userID}`,
+                `http://localhost:8081/api/user/viewFarmerSeedsOrdersByFarmerID/${userID}`
             ];
 
             const responses = await Promise.allSettled(
@@ -115,69 +157,111 @@ const NotificationSystem = () => {
 
             const newOrderNotifications: NotificationData[] = [];
             const paidOrderNotifications: NotificationData[] = [];
+            const confirmedOrderNotifications: NotificationData[] = [];
+            const rejectedOrderNotifications: NotificationData[] = [];
 
             responses.forEach((response, index) => {
                 if (response.status === 'fulfilled' && response.value.data) {
                     const data = response.value.data;
 
-                    // Map response arrays to notification types
-                    const responseKeys: (keyof ApiResponse)[] = [
-                        'consumerOrderGetResponse',
-                        'sfOrderGetResponse',
-                        'supermarketOrderGetResponse',
-                        'trainerOrderGetResponse'
-                    ];
+                    // Handle farmer orders (first 4 APIs)
+                    if (index < 4) {
+                        const responseKeys: (keyof ApiResponse)[] = [
+                            'consumerOrderGetResponse',
+                            'sfOrderGetResponse',
+                            'supermarketOrderGetResponse',
+                            'trainerOrderGetResponse'
+                        ];
 
-                    const orderTypes = [
-                        'Consumer',
-                        'Seeds & Fertilizer Seller',
-                        'Supermarket',
-                        'Trainer'
-                    ];
+                        const orderTypes = [
+                            'Consumer',
+                            'Seeds & Fertilizer Seller',
+                            'Supermarket',
+                            'Trainer'
+                        ];
 
-                    const orders = data[responseKeys[index]];
+                        const orders = data[responseKeys[index]];
 
-                    if (orders && Array.isArray(orders)) {
-                        orders.forEach(order => {
-                            // Check if this order belongs to the current farmer
-                            const farmerUserID = order.farmerProduct?.user?.userID;
+                        if (orders && Array.isArray(orders)) {
+                            orders.forEach(order => {
+                                // Check if this order belongs to the current farmer
+                                const farmerUserID = order.farmerProduct?.user?.userID;
 
-                            if (farmerUserID && farmerUserID.toString() === userID.toString() &&
-                                order.active === true &&
-                                order.confirmed === false &&
-                                order.addedToCart === false &&
-                                order.removedFromCart === false &&
-                                order.rejected === false) {
+                                if (farmerUserID && farmerUserID.toString() === userID.toString() && order.active === true) {
+                                    const notificationData: NotificationData = {
+                                        id: `${orderTypes[index]}-${order.orderID}`,
+                                        type: orderTypes[index],
+                                        orderID: order.orderID,
+                                        productName: order.productName,
+                                        customerName: `${order.user.firstName} ${order.user.lastName}`,
+                                        customerEmail: order.user.userEmail,
+                                        quantity: order.requiredQuantity,
+                                        price: order.price,
+                                        addedDate: new Date(order.addedDate),
+                                        confirmed: order.confirmed,
+                                        paid: order.paid,
+                                        rejected: order.rejected,
+                                        description: order.description,
+                                        category: order.farmerProduct?.productCategory || order.productCategory || 'N/A',
+                                        rawOrder: order
+                                    };
 
-                                const notificationData: NotificationData = {
-                                    id: `${orderTypes[index]}-${order.orderID}`,
-                                    type: orderTypes[index],
-                                    orderID: order.orderID,
-                                    productName: order.productName,
-                                    customerName: `${order.user.firstName} ${order.user.lastName}`,
-                                    customerEmail: order.user.userEmail,
-                                    quantity: order.requiredQuantity,
-                                    price: order.price,
-                                    addedDate: new Date(order.addedDate),
-                                    confirmed: order.confirmed,
-                                    paid: order.paid,
-                                    rejected: order.rejected,
-                                    description: order.description,
-                                    category: order.farmerProduct?.productCategory || order.productCategory || 'N/A',
-                                    rawOrder: order
-                                };
+                                    // Filter for new orders: confirmed=false, rejected=false, addedToCart=false, removedFromCart=false, paid=false
+                                    if (order.confirmed === false && order.rejected === false &&
+                                        order.addedToCart === false && order.removedFromCart === false && order.paid === false) {
+                                        newOrderNotifications.push(notificationData);
+                                    }
 
-                                // Filter for new orders (paid: false)
-                                if (order.paid === false) {
-                                    newOrderNotifications.push(notificationData);
+                                    // Filter for paid orders (paid: true)
+                                    if (order.paid === true) {
+                                        paidOrderNotifications.push(notificationData);
+                                    }
                                 }
+                            });
+                        }
+                    }
+                    // Handle farmer seeds orders (5th API) - ONLY for confirmed and rejected
+                    else if (index === 4) {
+                        const farmerSeedsOrders = data.farmerSeedsOrderGetResponse;
 
-                                // Filter for paid orders (paid: true)
-                                if (order.paid === true) {
-                                    paidOrderNotifications.push(notificationData);
+                        if (farmerSeedsOrders && Array.isArray(farmerSeedsOrders)) {
+                            farmerSeedsOrders.forEach(order => {
+                                // Only include orders that belong to the current farmer
+                                if (order.user.userID.toString() === userID.toString() && order.active === true) {
+                                    const notificationData: NotificationData = {
+                                        id: `FarmerSeeds-${order.orderID}`,
+                                        type: 'Seeds & Fertilizer Seller',
+                                        orderID: order.orderID,
+                                        productName: order.productName,
+                                        customerName: `${order.sfProduct.user.firstName} ${order.sfProduct.user.lastName}`,
+                                        customerEmail: order.sfProduct.user.userEmail,
+                                        sellerName: `${order.sfProduct.user.firstName} ${order.sfProduct.user.lastName}`,
+                                        quantity: order.requiredQuantity,
+                                        price: order.price,
+                                        addedDate: new Date(order.addedDate),
+                                        confirmed: order.confirmed,
+                                        paid: order.paid,
+                                        rejected: order.rejected,
+                                        description: order.description,
+                                        category: order.productCategory,
+                                        farmerSeedsOrder: order,
+                                        productID: order.sfProduct.productID
+                                    };
+
+                                    // Filter for confirmed orders from Seeds & Fertilizer Seller
+                                    if (order.confirmed === true && order.rejected === false &&
+                                        order.addedToCart === false && order.removedFromCart === false && order.paid === false) {
+                                        confirmedOrderNotifications.push(notificationData);
+                                    }
+
+                                    // Filter for rejected orders from Seeds & Fertilizer Seller
+                                    if (order.confirmed === false && order.rejected === true &&
+                                        order.addedToCart === false && order.removedFromCart === false && order.paid === false) {
+                                        rejectedOrderNotifications.push(notificationData);
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
                 }
             });
@@ -185,12 +269,17 @@ const NotificationSystem = () => {
             // Sort notifications by date (newest first)
             newOrderNotifications.sort((a, b) => b.addedDate.getTime() - a.addedDate.getTime());
             paidOrderNotifications.sort((a, b) => b.addedDate.getTime() - a.addedDate.getTime());
+            confirmedOrderNotifications.sort((a, b) => b.addedDate.getTime() - a.addedDate.getTime());
+            rejectedOrderNotifications.sort((a, b) => b.addedDate.getTime() - a.addedDate.getTime());
 
             setNewOrderNotifications(newOrderNotifications);
             setPaidOrderNotifications(paidOrderNotifications);
+            setConfirmedOrderNotifications(confirmedOrderNotifications);
+            setRejectedOrderNotifications(rejectedOrderNotifications);
 
-            // Total unread count (both new orders and paid orders)
-            const totalUnread = newOrderNotifications.length + paidOrderNotifications.length;
+            // Total unread count (all notification types)
+            const totalUnread = newOrderNotifications.length + paidOrderNotifications.length +
+                confirmedOrderNotifications.length + rejectedOrderNotifications.length;
             setUnreadCount(totalUnread);
 
         } catch (error) {
@@ -205,25 +294,29 @@ const NotificationSystem = () => {
     };
 
     const handleNotificationClick = (notification: NotificationData) => {
-        // Format the order data for the management table
-        const orderForTable = {
-            id: notification.id,
-            orderID: notification.orderID,
-            type: notification.type,
-            productName: notification.productName,
-            category: notification.category,
-            customerName: notification.customerName,
-            customerEmail: notification.customerEmail,
-            quantity: notification.quantity,
-            price: notification.price,
-            addedDate: notification.addedDate,
-            description: notification.description,
-            rawOrder: notification.rawOrder
-        };
+        // Handle Seeds Order notifications (redirect to farmerViewSFProductDetailsPage)
+        if ((notification.type === 'Seeds & Fertilizer Seller' && (activeTab === 'confirmed' || activeTab === 'rejected')) && notification.productID) {
+            router.push(`/farmerViewSFProductDetailsPage?productID=${notification.productID}`);
+        } else {
+            // Handle regular order notifications (redirect to order management)
+            const orderForTable = {
+                id: notification.id,
+                orderID: notification.orderID,
+                type: notification.type,
+                productName: notification.productName,
+                category: notification.category,
+                customerName: notification.customerName,
+                customerEmail: notification.customerEmail,
+                quantity: notification.quantity,
+                price: notification.price,
+                addedDate: notification.addedDate,
+                description: notification.description,
+                rawOrder: notification.rawOrder
+            };
 
-        // Navigate directly to the order management table with the selected order
-        const encodedOrder = encodeURIComponent(JSON.stringify(orderForTable));
-        router.push(`/farmerOrderManagement?farmerOrderManagement=${encodedOrder}`);
+            const encodedOrder = encodeURIComponent(JSON.stringify(orderForTable));
+            router.push(`/farmerOrderManagement?farmerOrderManagement=${encodedOrder}`);
+        }
 
         // Close the notification panel
         setIsOpen(false);
@@ -287,30 +380,195 @@ const NotificationSystem = () => {
         }
     };
 
-    const renderNotificationCard = (notification: NotificationData, isPaid = false) => {
-        console.log('Rendering notification card:', notification);
-        console.log('Notification addedDate:', notification.addedDate, 'Type:', typeof notification.addedDate);
+    const getTabConfig = (tab: string) => {
+        switch (tab) {
+            case 'new':
+                return { icon: Clock, label: 'New Orders', color: 'text-[#88C34E]', borderColor: 'border-[#88C34E]' };
+            case 'paid':
+                return { icon: CheckCircle, label: 'Paid Orders', color: 'text-green-600', borderColor: 'border-green-600' };
+            case 'confirmed':
+                return { icon: CheckCircle, label: 'Confirmed', color: 'text-green-600', borderColor: 'border-green-600' };
+            case 'rejected':
+                return { icon: XCircle, label: 'Rejected', color: 'text-red-600', borderColor: 'border-red-600' };
+            default:
+                return { icon: Clock, label: 'Orders', color: 'text-gray-600', borderColor: 'border-gray-600' };
+        }
+    };
 
+    const renderNotificationCard = (notification: NotificationData, status: 'new' | 'paid' | 'confirmed' | 'rejected') => {
+        const isConfirmed = status === 'confirmed';
+        const isRejected = status === 'rejected';
+        const isSeedOrder = (notification.type === 'Seeds & Fertilizer Seller' && (isConfirmed || isRejected));
+
+        // Special design for confirmed and rejected seed orders matching the provided images
+        if (isSeedOrder && (isConfirmed || isRejected)) {
+            return (
+                <div
+                    key={notification.id}
+                    onClick={() => handleNotificationClick(notification)}
+                    className={`relative rounded-xl p-4 mb-3 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                        isConfirmed ? 'bg-green-50' : 'bg-red-50'
+                    }`}
+                >
+                    {/* Header with icon, title and status badge */}
+                    <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center space-x-3">
+                            {/* Green circular icon */}
+                            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <Package size={20} className="text-white"/>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-gray-800 text-base leading-tight">
+                                    Seeds & Fertilizer Seller Order
+                                </h4>
+                                <p className="text-sm text-gray-500 font-medium">
+                                    Order #{notification.orderID}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Status badge */}
+                        <div className={`flex items-center space-x-1 px-3 py-1 rounded-md text-xs font-bold ${
+                            isConfirmed
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-red-100 text-red-700'
+                        }`}>
+                            {isConfirmed ? (
+                                <>
+                                    <CheckCircle size={14} className="text-green-600"/>
+                                    <span>CONFIRMED</span>
+                                </>
+                            ) : (
+                                <>
+                                    <XCircle size={14} className="text-red-600"/>
+                                    <span>REJECTED</span>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Product section */}
+                    <div className="flex items-center space-x-3 mb-3">
+                        <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Package size={16} className="text-green-600"/>
+                        </div>
+                        <div>
+                            <h5 className="font-bold text-gray-800 text-base">
+                                {notification.productName}
+                            </h5>
+                            <p className="text-sm text-gray-600">
+                                {notification.description || 'Seed'}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Status message */}
+                    <div className="flex items-center space-x-2 mb-4">
+                        {isConfirmed ? (
+                            <CheckCircle size={16} className="text-green-600"/>
+                        ) : (
+                            <XCircle size={16} className="text-red-600"/>
+                        )}
+                        <span className={`text-sm font-bold ${
+                            isConfirmed ? 'text-green-700' : 'text-red-700'
+                        }`}>
+                        {isConfirmed ? 'Order confirmed by seeds & fertilizer seller' : 'Order rejected by seeds & fertilizer seller'}
+                    </span>
+                    </div>
+
+                    {/* Click to view details */}
+                    <div className="flex items-center space-x-2 mb-4">
+                        <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                            <Eye size={10} className="text-white"/>
+                        </div>
+                        <span className="text-sm font-bold text-blue-600 underline">
+                        Click to view product details
+                    </span>
+                    </div>
+
+                    {/* Details grid - exactly like in images */}
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-3">
+                        {/* Seeds & Fertilizer Seller */}
+                        <div className="flex items-center space-x-2">
+                            <div className="w-6 h-6 bg-blue-100 rounded flex items-center justify-center">
+                                <User size={14} className="text-blue-600"/>
+                            </div>
+                            <div>
+                                <p className="text-xs text-gray-500 font-medium">
+                                    Seeds & Fertilizer Seller
+                                </p>
+                                <p className="text-sm font-bold text-gray-800">
+                                    {notification.sellerName}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Date */}
+                        <div className="flex items-center space-x-2">
+                            <div className={`w-6 h-6 rounded flex items-center justify-center ${
+                                isConfirmed ? 'bg-green-100' : 'bg-red-100'
+                            }`}>
+                                <Calendar size={14} className={`${
+                                    isConfirmed ? 'text-green-600' : 'text-red-600'
+                                }`}/>
+                            </div>
+                            <div>
+                                <p className="text-xs text-gray-500 font-medium">
+                                    {isConfirmed ? 'Confirmed Date' : 'Rejected Date'}
+                                </p>
+                                <p className="text-sm font-bold text-gray-800">
+                                    {formatDate(notification.addedDate)}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Quantity */}
+                        <div className="flex items-center space-x-2">
+                            <div className="w-6 h-6 bg-orange-100 rounded flex items-center justify-center">
+                                <Package size={14} className="text-orange-600"/>
+                            </div>
+                            <div>
+                                <p className="text-xs text-gray-500 font-medium">Quantity</p>
+                                <p className="text-sm font-bold text-gray-800">{notification.quantity} kg</p>
+                            </div>
+                        </div>
+
+                        {/* Price */}
+                        <div className="flex items-center space-x-2">
+                            <div className={`w-6 h-6 rounded flex items-center justify-center ${
+                                isConfirmed ? 'bg-green-100' : 'bg-red-100'
+                            }`}>
+                                <DollarSign size={14} className={`${
+                                    isConfirmed ? 'text-green-600' : 'text-red-600'
+                                }`}/>
+                            </div>
+                            <div>
+                                <p className="text-xs text-gray-500 font-medium">Price</p>
+                                <p className={`text-sm font-bold ${
+                                    isConfirmed ? 'text-green-700' : 'text-red-700'
+                                }`}>
+                                    Rs. {notification.price.toFixed(2)}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Original design for other notification types (new, paid, etc.)
         return (
             <div
                 key={notification.id}
-                onClick={() => !isPaid && handleNotificationClick(notification)}
-                className={`relative p-4 mb-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] group ${
-                    !isPaid ? 'cursor-pointer' : 'cursor-default'
+                onClick={() => handleNotificationClick(notification)}
+                className={`relative rounded-2xl p-4 mb-4 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${
+                    status === 'paid' ? 'bg-green-50 border border-green-200' : 'bg-white border border-gray-200'
                 }`}
-                style={{
-                    background: isPaid
-                        ? 'linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%)'
-                        : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-                    border: isPaid
-                        ? '1px solid rgba(34, 197, 94, 0.2)'
-                        : '1px solid rgba(136, 195, 78, 0.1)'
-                }}
             >
-                {/* Order Type Badge */}
-                <div className="flex items-start justify-between mb-3">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-full ${getTypeColor(notification.type)} shadow-lg`}>
+                        <div className={`p-2 rounded-full ${getTypeColor(notification.type)} shadow-sm`}>
                             {getNotificationIcon(notification.type)}
                         </div>
                         <div>
@@ -322,20 +580,18 @@ const NotificationSystem = () => {
                             </p>
                         </div>
                     </div>
-                    <div className="flex items-center space-x-1">
-                        {isPaid ? (
+                    <div className="flex items-center space-x-2">
+                        {status === 'paid' ? (
                             <>
                                 <CheckCircle size={16} className="text-green-500"/>
-                                <span
-                                    className="text-xs font-poppins-bold text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                                <span className="text-xs font-poppins-bold text-green-600 bg-green-100 px-3 py-1 rounded-full">
                                 PAID
                             </span>
                             </>
                         ) : (
                             <>
                                 <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                                <span
-                                    className="text-xs font-poppins-bold text-red-600 bg-red-50 px-2 py-1 rounded-full">
+                                <span className="text-xs font-poppins-bold text-red-600 bg-red-50 px-3 py-1 rounded-full">
                                 NEW
                             </span>
                             </>
@@ -343,82 +599,92 @@ const NotificationSystem = () => {
                     </div>
                 </div>
 
-                {/* Product Info */}
-                <div className={`${isPaid ? 'bg-green-50' : 'bg-gray-50'} rounded-lg p-3 mb-3`}>
-                    <div className="flex items-center space-x-2 mb-2">
-                        <Package size={16} className={isPaid ? "text-green-600" : "text-[#88C34E]"}/>
-                        <span className="font-poppins-bold text-gray-800 text-sm">
-                        {notification.productName}
-                    </span>
+                {/* Product Section */}
+                <div className="flex items-start space-x-3 mb-4">
+                    <div className={`p-2 rounded-lg ${status === 'paid' ? 'bg-green-100' : 'bg-gray-100'}`}>
+                        <Package size={16} className={`${status === 'paid' ? 'text-green-600' : 'text-gray-600'}`}/>
                     </div>
-                    <p className="text-xs text-gray-600 font-poppins-regular">
-                        {notification.description}
-                    </p>
-                    {isPaid && (
-                        <div className="mt-2 flex items-center space-x-1">
-                            <CheckCircle size={14} className="text-green-600"/>
-                            <span className="text-xs font-poppins-bold text-green-700">
-                            Successfully paid by customer
-                        </span>
-                        </div>
-                    )}
-                    {!isPaid && (
-                        <div className="mt-2 flex items-center space-x-1">
-                            <Eye size={14} className="text-blue-600"/>
-                            <span className="text-xs font-poppins-bold text-blue-700">
-                            Click to manage this order
-                        </span>
-                        </div>
-                    )}
+                    <div className="flex-1">
+                        <h5 className="font-poppins-bold text-gray-800 text-sm mb-1">
+                            {notification.productName}
+                        </h5>
+                        <p className="text-xs text-gray-600 font-poppins-regular leading-relaxed">
+                            {notification.description || 'Seed'}
+                        </p>
+                    </div>
                 </div>
 
-                {/* Customer & Order Details */}
-                <div className="grid grid-cols-2 gap-3 text-xs font-poppins-regular">
+                {/* Status Message */}
+                <div className={`flex items-center space-x-2 mb-4 p-2 rounded-lg ${
+                    status === 'paid' ? 'bg-green-100' : 'bg-blue-50'
+                }`}>
+                    <Eye size={14} className={status === 'paid' ? 'text-green-600' : 'text-blue-600'}/>
+                    <span className={`text-xs font-poppins-bold ${
+                        status === 'paid' ? 'text-green-700' : 'text-blue-700'
+                    }`}>
+                    Click to manage this order
+                </span>
+                </div>
+
+                {/* Details Grid */}
+                <div className="grid grid-cols-2 gap-4">
                     <div className="flex items-center space-x-2">
                         <User size={14} className="text-blue-500"/>
                         <div>
-                            <p className="text-gray-500">Customer</p>
-                            <p className="font-poppins-bold text-gray-800">{notification.customerName}</p>
+                            <p className="text-xs text-gray-500 font-poppins-regular">Customer</p>
+                            <p className="text-xs font-poppins-bold text-gray-800">
+                                {notification.customerName}
+                            </p>
                         </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <Calendar size={14} className="text-green-500"/>
+                        <Calendar size={14} className={status === 'paid' ? 'text-green-500' : 'text-green-500'}/>
                         <div>
-                            <p className="text-gray-500">{isPaid ? 'Paid Date' : 'Order Date'}</p>
-                            <p className="font-poppins-bold text-gray-800">
-                                {(() => {
-                                    console.log('About to format date in render:', notification.addedDate);
-                                    return formatDate(notification.addedDate);
-                                })()}
+                            <p className="text-xs text-gray-500 font-poppins-regular">Order Date</p>
+                            <p className="text-xs font-poppins-bold text-gray-800">
+                                {formatDate(notification.addedDate)}
                             </p>
                         </div>
                     </div>
                     <div className="flex items-center space-x-2">
                         <Package size={14} className="text-orange-500"/>
                         <div>
-                            <p className="text-gray-500">Quantity</p>
-                            <p className="font-poppins-bold text-gray-800">{notification.quantity} kg</p>
+                            <p className="text-xs text-gray-500 font-poppins-regular">Quantity</p>
+                            <p className="text-xs font-poppins-bold text-gray-800">{notification.quantity} kg</p>
                         </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <DollarSign size={14} className={isPaid ? "text-green-600" : "text-purple-500"}/>
+                        <DollarSign size={14} className={status === 'paid' ? 'text-green-600' : 'text-purple-500'}/>
                         <div>
-                            <p className="text-gray-500">{isPaid ? 'Amount Received' : 'Price'}</p>
-                            <p className={`font-poppins-bold ${isPaid ? 'text-green-700' : 'text-gray-800'}`}>
+                            <p className="text-xs text-gray-500 font-poppins-regular">Price</p>
+                            <p className={`text-xs font-poppins-bold ${
+                                status === 'paid' ? 'text-green-700' : 'text-gray-800'
+                            }`}>
                                 Rs. {notification.price.toFixed(2)}
                             </p>
                         </div>
                     </div>
                 </div>
-
-                {/* Hover Effect Overlay */}
-                <div
-                    className={`absolute inset-0 ${isPaid ? 'bg-gradient-to-r from-green-500/5' : 'bg-gradient-to-r from-[#88C34E]/5'} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none`}></div>
             </div>
         );
     };
 
-    const currentNotifications = activeTab === 'new' ? newOrderNotifications : paidOrderNotifications;
+    const getCurrentNotifications = () => {
+        switch (activeTab) {
+            case 'new':
+                return { notifications: newOrderNotifications, status: 'new' as const };
+            case 'paid':
+                return { notifications: paidOrderNotifications, status: 'paid' as const };
+            case 'confirmed':
+                return { notifications: confirmedOrderNotifications, status: 'confirmed' as const };
+            case 'rejected':
+                return { notifications: rejectedOrderNotifications, status: 'rejected' as const };
+            default:
+                return { notifications: newOrderNotifications, status: 'new' as const };
+        }
+    };
+
+    const { notifications: currentNotifications, status: currentStatus } = getCurrentNotifications();
 
     return (
         <div className="relative">
@@ -430,10 +696,9 @@ const NotificationSystem = () => {
             >
                 <Bell size={35}/>
                 {unreadCount > 0 && (
-                    <span
-                        className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
-                    {unreadCount > 99 ? '99+' : unreadCount}
-                </span>
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
                 )}
             </button>
 
@@ -441,7 +706,7 @@ const NotificationSystem = () => {
             {isOpen && (
                 <div
                     ref={panelRef}
-                    className="absolute right-0 top-12 w-[450px] bg-white border-0 rounded-2xl shadow-2xl z-50 max-h-[600px] overflow-hidden backdrop-blur-sm"
+                    className="absolute right-0 top-12 w-[550px] bg-white border-0 rounded-2xl shadow-2xl z-50 max-h-[600px] overflow-hidden backdrop-blur-sm"
                     style={{
                         background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
                         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05)'
@@ -462,7 +727,7 @@ const NotificationSystem = () => {
                                         Order Notifications
                                     </h3>
                                     <p className="text-white/80 text-sm font-poppins-regular">
-                                        {newOrderNotifications.length} new, {paidOrderNotifications.length} paid
+                                        {newOrderNotifications.length} new, {paidOrderNotifications.length} paid, {confirmedOrderNotifications.length} confirmed, {rejectedOrderNotifications.length} rejected
                                     </p>
                                 </div>
                             </div>
@@ -470,81 +735,83 @@ const NotificationSystem = () => {
                                 onClick={() => setIsOpen(false)}
                                 className="p-2 hover:bg-white/20 rounded-full transition-all duration-200 group"
                             >
-                                <X size={20}
-                                   className="text-white group-hover:rotate-90 transition-transform duration-200"/>
+                                <X size={20} className="text-white group-hover:rotate-90 transition-transform duration-200"/>
                             </button>
                         </div>
                     </div>
 
                     {/* Tab Navigation */}
                     <div className="flex bg-gray-50 border-b border-gray-200">
-                        <button
-                            onClick={() => setActiveTab('new')}
-                            className={`flex-1 py-3 px-4 text-sm font-poppins-bold transition-all duration-200 flex items-center justify-center space-x-2 ${
-                                activeTab === 'new'
-                                    ? 'bg-white text-[#88C34E] border-b-2 border-[#88C34E]'
-                                    : 'text-gray-600 hover:text-gray-800'
-                            }`}
-                        >
-                            <Clock size={16}/>
-                            <span>New Orders ({newOrderNotifications.length})</span>
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('paid')}
-                            className={`flex-1 py-3 px-4 text-sm font-poppins-bold transition-all duration-200 flex items-center justify-center space-x-2 ${
-                                activeTab === 'paid'
-                                    ? 'bg-white text-green-600 border-b-2 border-green-600'
-                                    : 'text-gray-600 hover:text-gray-800'
-                            }`}
-                        >
-                            <CheckCircle size={16}/>
-                            <span>Paid Orders ({paidOrderNotifications.length})</span>
-                        </button>
+                        {(['new', 'paid', 'confirmed', 'rejected'] as const).map((tab) => {
+                            const config = getTabConfig(tab);
+                            const Icon = config.icon;
+                            const count = tab === 'new' ? newOrderNotifications.length :
+                                tab === 'paid' ? paidOrderNotifications.length :
+                                    tab === 'confirmed' ? confirmedOrderNotifications.length :
+                                        rejectedOrderNotifications.length;
+
+                            return (
+                                <button
+                                    key={tab}
+                                    onClick={() => setActiveTab(tab)}
+                                    className={`flex-1 py-3 px-2 text-xs font-poppins-bold transition-all duration-200 flex items-center justify-center space-x-1 ${
+                                        activeTab === tab
+                                            ? `bg-white ${config.color} border-b-2 ${config.borderColor}`
+                                            : 'text-gray-600 hover:text-gray-800'
+                                    }`}
+                                >
+                                    <Icon size={14}/>
+                                    <span>{config.label} ({count})</span>
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* Notifications List */}
-                    <div
-                        className="max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                    <div className="max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                         {loading ? (
                             <div className="p-8 text-center">
                                 <div className="relative">
-                                    <div
-                                        className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-[#88C34E]"></div>
-                                    <div
-                                        className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#88C34E]/20 animate-pulse"></div>
+                                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-[#88C34E]"></div>
+                                    <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#88C34E]/20 animate-pulse"></div>
                                 </div>
                                 <p className="mt-4 text-gray-500 font-poppins-regular">Loading notifications...</p>
                             </div>
                         ) : currentNotifications.length === 0 ? (
                             <div className="p-8 text-center">
                                 <div className="relative mb-4">
-                                    <div
-                                        className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
+                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
                                         {activeTab === 'new' ? (
                                             <Clock size={32} className="text-gray-400"/>
+                                        ) : activeTab === 'confirmed' ? (
+                                            <CheckCircle size={32} className="text-gray-400"/>
+                                        ) : activeTab === 'rejected' ? (
+                                            <XCircle size={32} className="text-gray-400"/>
                                         ) : (
                                             <CheckCircle size={32} className="text-gray-400"/>
                                         )}
                                     </div>
-                                    <div
-                                        className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#88C34E] rounded-full flex items-center justify-center">
                                         <span className="text-white text-xs">✓</span>
                                     </div>
                                 </div>
                                 <p className="text-gray-500 font-poppins-regular text-lg mb-2">
-                                    {activeTab === 'new' ? 'All caught up!' : 'No paid orders yet!'}
+                                    {activeTab === 'new' ? 'No new notifications!' :
+                                        activeTab === 'confirmed' ? 'No confirmed orders!' :
+                                            activeTab === 'rejected' ? 'No rejected orders!' :
+                                                'No notifications!'}
                                 </p>
                                 <p className="text-gray-400 font-poppins-regular text-sm">
-                                    {activeTab === 'new'
-                                        ? 'No new orders at the moment'
-                                        : 'No payments received yet'
-                                    }
+                                    {activeTab === 'new' ? 'All caught up! No new notifications to show' :
+                                        activeTab === 'confirmed' ? 'No orders have been confirmed yet' :
+                                            activeTab === 'rejected' ? 'No orders have been rejected yet' :
+                                                'No notifications available at this time'}
                                 </p>
                             </div>
                         ) : (
                             <div className="p-2">
                                 {currentNotifications.map((notification) =>
-                                    renderNotificationCard(notification, activeTab === 'paid')
+                                    renderNotificationCard(notification, activeTab === 'new')
                                 )}
                             </div>
                         )}

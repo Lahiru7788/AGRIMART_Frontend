@@ -56,7 +56,7 @@ const FarmerDashboardCards = () => {
             title: "Training Services For Farming",
             imageSrc: "/Images/HeaderNav/best-agriculture-courses.jpg",
             buttonText:"View Services",
-            targetPath: "/farmer/training-services"
+            targetPath: "/ConsumerViewTrainerCourses&Services"
         }
     ];
 

@@ -544,11 +544,7 @@ const OrderNotificationsTable = () => {
                                                 <div className="text-sm text-gray-500 font-poppins-regular">
                                                     Category: {order.category}
                                                 </div>
-                                                {order.description && (
-                                                    <div className="text-xs text-gray-400 font-poppins-regular mt-1 max-w-xs truncate">
-                                                        {order.description}
-                                                    </div>
-                                                )}
+
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="text-sm font-poppins-bold text-gray-900">

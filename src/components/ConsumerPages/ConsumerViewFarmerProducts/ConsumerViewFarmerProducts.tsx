@@ -7,6 +7,8 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { getWithExpiry } from "../../../../auth-utils";
+import {router} from "next/client";
+import ProductDetailsPage from "../ConsumerViewProductDetailsPage/ConsumerViewProductDetailsPage";
 
 
 const CategoryDropdown = ({ categories, onCategoryChange }) => {
@@ -28,6 +30,30 @@ const CategoryDropdown = ({ categories, onCategoryChange }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
             </div>
+        </div>
+    );
+};
+
+const ViewOrderHistoryButton = () => {
+    const router = useRouter(); // Add this line
+
+    const handleViewOrderHistory = () => {
+        router.push('/consumerOrderHistory');
+    };
+
+    return (
+        <div className="w-full flex justify-center my-6">
+            <button
+                onClick={handleViewOrderHistory}
+                className="bg-[#88C34E] hover:bg-[#7AB33D] text-white font-poppins-bold px-8 py-3 rounded-full shadow-md transition-colors duration-200 flex items-center gap-2"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                View Order History
+            </button>
         </div>
     );
 };
@@ -1048,6 +1074,7 @@ const ProductList = () => {
                     onCategoryChange={handleCategoryChange}
                     categories={categories}
                 />
+                <ViewOrderHistoryButton />
                 <SearchBar onSearch={handleSearch} />
             </div>
 

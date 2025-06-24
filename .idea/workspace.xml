@@ -5,18 +5,149 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67cf3b02-11fe-4601-90d1-e846ab0ca550" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/consumerViewProductDetailsPage/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/farmerOrderManagement/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/farmerViewCustomermerProfile/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerNotifications/ConsumerNotifications.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewProductDetailsPage/ConsumerViewProductDetailsPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerNotifications/FarmerNotifications.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerOrderManagementTable/FarmerOrderManagementTable.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewCustomerProfile/FarmerViewCustomerProfile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/ConsumerViewTrainerCourses&amp;Services/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerAddBillingDetails/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerAddTrainerPayements/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerOrderHistory/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerProductAddToCart/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerSFOrderHistory/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerUpdateProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerUpdateSFProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewCourseChapters/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewFarmerProductDetails/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewFarmers/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewSFProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewSFProfile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewSeedsSellers/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewSellerProductDetails/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewSellers/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewTrainerCourses/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewTrainerProfile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/consumerViewTrainerServices/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerSFOrderHistory/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerUpdateSFProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewCourseChapters/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewSFProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewTrainerCourses/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewTrainerCoursesAndServices/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewTrainerProfile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/farmerViewTrainerServices/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/forgotPassword-page/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seedsSellerOrderHistory/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seedsSellerOrderManagement/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seedsSellerUpdateProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seedsSellerViewProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/seedsSelllerNotifications/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketAddBillingDetails/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketOrderHistory/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketProductAddToCart/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketSFOrderHistory/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketUpdateProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketUpdateSFProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewFarmerProductDetails/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewFarmerProfile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewFarmers/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewSFProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewSeedsSellers/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewSellerProductDetails/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/supermarketViewSellers/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerAddCourseChapters/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerAddCourses/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerAddHiringService/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerDashboard/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerOrderHistory/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerProfile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerProfileSettings/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerUpdateCourseDetails/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerUpdateCourses/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerUpdateHiringService/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerUpdateHiringServiceDetails/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerUpdateProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerViewFarmerProducts/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/trainerViewProductDetailsPage/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerAddBillingDetails/ConsumerAddBillingDetails.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerAddTrainerPayements/ConsumerAddTrainerPayements.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerOrderHistory/ConsumerOrderHistory.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerProductAddToCart/ConsumerProductAddToCart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerSFOrderHistory/ConsumerSFOrderHistory.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerUpdateProductDetailsPage/ConsumerUpdateProductDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerUpdateSFProductDetailsPage/ConsumerUpdateSFProductDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewCourseChapters/ConsumerViewCourseChapters.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewFarmerProductDetails/ConsumerViewFarmerProductDetails.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewFarmers/ConsumerViewFarmers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewSFProductDetailsPage/ConsumerViewSFProductDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewSFProfile/ConsumerViewSFProfile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewSeedsSellers/ConsumerViewSeedsSellers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewSellerProductDetails/ConsumerViewSellerProductDetails.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewSellers/ConsumerViewSellers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewTrainerCourses/ConsumerViewTrainerCourses.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewTrainerCoursesAndServices/ConsumerViewTrainerCoursesAndServices.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewTrainerProfile/ConsumerViewTrainerProfile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewTrainerServices/ConsumerViewTrainerServices.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ConsumerViewTrainerServices/ConsumerViewTrainerServices.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerSFOrderHistory/FarmerSFOrderHistory.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerUpdateSFProductDetailsPage/FarmerUpdateSFProductDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewCourseChapters/FarmerViewCourseChapters.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewSFProductDetailsPage/FarmerViewSFProductDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewTrainerCourses/FarmerViewTrainerCourses.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewTrainerCoursesAndServices/FarmerViewTrainerCoursesAndServices.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewTrainerProfile/FarmerViewTrainerProfile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewTrainerServices/FarmerViewTrainerServices.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ForgotPasswordPage/ForgotPasswordPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SeedsSellerPages/SeedSellerOrderManagement/SeedSellerOrderManagement.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SeedsSellerPages/SeedsSellerOrderHistory/SeedsSellerOrderHistory.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SeedsSellerPages/SeedsSellerUpdateProductsDetailsPage/SeedsSellerUpdateProductsDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SeedsSellerPages/SeedsSellerViewProductsDetailsPage/SeedsSellerViewProductsDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SeedsSellerPages/SeedsSelllerNotifications/SeedsSelllerNotifications.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketAddBillingDetails/SupermarketAddBillingDetails.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketNotifications/SupermarketNotifications.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketOrderHistory/SupermarketOrderHistory.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketProductAddToCart/SupermarketProductAddToCart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketSFOrderHistory/SupermarketSFOrderHistory.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketUpdateProductDetailsPage/SupermarketUpdateProductDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketUpdateSFProductDetailsPage/SupermarketUpdateSFProductDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewFarmerProductDetails/SupermarketViewFarmerProductDetails.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewFarmerProfile/SupermarketViewFarmerProfile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewFarmers/SupermarketViewFarmers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewProductDetailsPage/SupermarketViewProductDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewSFProductDetailsPage/SupermarketViewSFProductDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewSeedsSellers/SupermarketViewSeedsSellers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewSellerProductDetails/SupermarketViewSellerProductDetails.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewSellers/SupermarketViewSellers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerDashboard/TrainerDashboard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerAddCourseChapters/TrainerAddCourseChapters.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerAddCourses/TrainerAddCourses.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerAddHiringService/TrainerAddHiringService.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerOrderHistory/TrainerOrderHistory.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerUpdateCourseDetails/TrainerUpdateCourseDetails.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerUpdateCourses/TrainerUpdateCourses.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerUpdateHiringService/TrainerUpdateHiringService.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerUpdateHiringServiceDetails/TrainerUpdateHiringServiceDetails.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerUpdateProductsDetailsPage/TrainerUpdateProductsDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerViewFarmerProducts/TrainerViewFarmerProducts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerPages/TrainerViewProductsDetailsPage/TrainerViewProductsDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerProfile/TrainerProfile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TrainerProfileSettings/TrainerProfileSettings.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/RootLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/RootLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/farmerViewCustomermerProfile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/farmerViewCustomerProfile/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ConsumerDashboard/ConsumerDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ConsumerDashboard/ConsumerDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerNotifications/ConsumerNotifications.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerNotifications/ConsumerNotifications.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewFarmerProducts/ConsumerViewFarmerProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewFarmerProducts/ConsumerViewFarmerProducts.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/FarmerDashboard/FarmerDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerDashboard/FarmerDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewProducts/ConsumerViewProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewProducts/ConsumerViewProducts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewSFProducts/ConsumerViewSFProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ConsumerPages/ConsumerViewSFProducts/ConsumerViewSFProducts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/FarmerPages/FarmerNotifications/FarmerNotifications.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerNotifications/FarmerNotifications.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/FarmerPages/FarmerOrderManagementTable/FarmerOrderManagementTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerOrderManagementTable/FarmerOrderManagementTable.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewConsumerOrders/FarmerViewConsumerOrders.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewConsumerOrders/FarmerViewConsumerOrders.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewHelp/FarmerViewHelp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewHelp/FarmerViewHelp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewSFProducts/FarmerViewSFProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FarmerPages/FarmerViewSFProducts/FarmerViewSFProducts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LoginPage/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LoginPage/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SAndFSellerDashboard/SAndFSellerDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SAndFSellerDashboard/SAndFSellerDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SeedsSellerPages/SeedsSellerViewFarmerProducts/SeedsSellerViewFarmerProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SeedsSellerPages/SeedsSellerViewFarmerProducts/SeedsSellerViewFarmerProducts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SupermarketDashboard/SupermarketDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SupermarketDashboard/SupermarketDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewFarmerProducts/SupermarketViewFarmerProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewFarmerProducts/SupermarketViewFarmerProducts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewSFProducts/SupermarketViewSFProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SupermarketPages/SupermarketViewSFProducts/SupermarketViewSFProducts.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +185,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\HP\Downloads\AGRIMART - Front-end\agrimart-frontend\src\components\ConsumerPages" />
       <recent name="C:\Users\HP\Downloads\AGRIMART - Front-end\agrimart-frontend\src\components\SeedsSellerPages\SeedsSellerAddProduct" />
     </key>
   </component>
@@ -195,6 +327,22 @@
       <workItem from="1748869022280" duration="1835000" />
       <workItem from="1748926821857" duration="16875000" />
       <workItem from="1749013296050" duration="22593000" />
+      <workItem from="1749081603543" duration="200000" />
+      <workItem from="1749140241476" duration="19221000" />
+      <workItem from="1749191048919" duration="16199000" />
+      <workItem from="1749276831811" duration="16227000" />
+      <workItem from="1749397465887" duration="3479000" />
+      <workItem from="1749559462093" duration="13590000" />
+      <workItem from="1749653801238" duration="2946000" />
+      <workItem from="1749707196638" duration="20662000" />
+      <workItem from="1749822202312" duration="8199000" />
+      <workItem from="1749877826434" duration="20393000" />
+      <workItem from="1749963557676" duration="10953000" />
+      <workItem from="1750023424594" duration="588000" />
+      <workItem from="1750054686607" duration="5903000" />
+      <workItem from="1750305541823" duration="5746000" />
+      <workItem from="1750339465951" duration="3873000" />
+      <workItem from="1750602749313" duration="8539000" />
     </task>
     <servers />
   </component>

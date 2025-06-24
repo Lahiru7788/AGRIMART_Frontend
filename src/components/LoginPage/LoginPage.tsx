@@ -100,6 +100,8 @@ const LoginPage: React.FC = () => {
                     router.push('/supermarketDashboard');
                 } else if (userType === "SeedsAndFertilizerSeller") {
                     router.push('/seeds&FertilizerSellerDashboard');
+                } else if (userType === "FarmerTrainer") {
+                    router.push('/trainerDashboard');
                 } else {
                     // Default dashboard or handle unknown user type
                     router.push('/dashboard');
@@ -168,7 +170,7 @@ const LoginPage: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    <div className="mb-16">
+                                    <div className="mb-4">
                                         <label className="block ml-[18px] text-gray-700 font-poppins-regular mb-1">User Password</label>
                                         <div className="relative">
                                             <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">
@@ -187,11 +189,20 @@ const LoginPage: React.FC = () => {
                                                 className="w-full border font-poppins-regular pl-[42px] shadow-md shadow-gray-200 rounded-[20px] px-4 py-2 focus:ring-2 focus:ring-[#5C8F2B] outline-none"
                                             />
                                         </div>
+                                        {/* Forgot Password Link */}
+                                        <div className="flex justify-end mt-2">
+                                            <Link
+                                                href="/forgotPassword-page"
+                                                className="text-[#5C8F2B] font-poppins-regular text-sm hover:underline transition-colors duration-200"
+                                            >
+                                                Forgot Password?
+                                            </Link>
+                                        </div>
                                     </div>
 
                                     <button
                                         type="submit"
-                                        className="w-full h-[45px] font-poppins-light text-[16px] shadow-md shadow-gray-500 bg-[#5C8F2B] hover:bg-[#B3FDBB] hover:text-[#5C8F2B] text-white font-semibold py-2 rounded-[20px] transition duration-300"
+                                        className="w-full h-[45px] font-poppins-light text-[16px] mt-8 shadow-md shadow-gray-500 bg-[#5C8F2B] hover:bg-[#B3FDBB] hover:text-[#5C8F2B] text-white font-semibold py-2 rounded-[20px] transition duration-300"
                                     >
                                         <span className="text-shadow-lg">SignIn</span>
                                     </button>

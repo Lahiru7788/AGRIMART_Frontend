@@ -5,6 +5,7 @@ import axios from "axios";
 import { Pagination } from "@mui/material";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { getWithExpiry } from "../../../../auth-utils";
 
 const CategoryDropdown = ({ categories, onCategoryChange }) => {
     return (
@@ -40,14 +41,11 @@ const SearchBar = ({ onSearch }) => {
     return (
         <div className="w-full flex justify-end">
             <div className="relative flex items-center">
-                {/* Green circular search icon */}
                 <div className="absolute left-0 flex items-center justify-center w-12 h-12 bg-[#88C34E] rounded-full z-10">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
-
-                {/* Search input with left padding to accommodate the icon */}
                 <input
                     type="text"
                     placeholder="Search here"
@@ -60,13 +58,13 @@ const SearchBar = ({ onSearch }) => {
     );
 };
 
-const OrderCard = ({ order }) => {
+const OrderCard = ({ order, onOrderUpdate, userID }) => {
     const [showOfferDetails, setShowOfferDetails] = useState(false);
     const [offerDetails, setOfferDetails] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isAccepting, setIsAccepting] = useState(false);
 
     useEffect(() => {
-        // Fetch offer details if available
         if (order.hasOffer) {
             fetchOfferDetails();
         }
@@ -76,10 +74,12 @@ const OrderCard = ({ order }) => {
         setIsLoading(true);
         try {
             const response = await axios.get(
-                `http://localhost:8081/api/user/viewConsumerOffers/${order.orderID}`
+                `http://localhost:8081/api/user/viewConsumerOffers/${order.orderID}`,
+                {
+                    withCredentials: true
+                }
             );
 
-            // Access the correct part of the response structure
             if (response.data.consumerOfferGetResponse &&
                 response.data.consumerOfferGetResponse.length > 0) {
                 setOfferDetails(response.data.consumerOfferGetResponse[0]);
@@ -95,27 +95,130 @@ const OrderCard = ({ order }) => {
         setShowOfferDetails(!showOfferDetails);
     };
 
-    const handleAccept = () => {
-        toast.success('Order accepted successfully!', {
-            position: "top-right",
-            autoClose: 5000,
-        });
+    const handleAccept = async () => {
+        setIsAccepting(true);
+        try {
+            // First API call - PUT request to confirm order
+            const confirmResponse = await axios.put(
+                `http://localhost:8081/api/user/consumerConfirm-addOrder/${order.orderID}/confirm`,
+                {},
+                {
+                    withCredentials: true
+                }
+            );
+
+            console.log('Confirm response:', confirmResponse.data);
+
+            // Second API call - POST request to farmer accept consumer orders
+            const acceptData = {
+                orderID: order.orderID,
+                productName: order.productName,
+                price: order.price,
+                requiredQuantity: order.requiredQuantity,
+                requiredTime: order.requiredTime,
+                description: order.description,
+                addedDate: order.addedDate,
+                farmerID: userID, // Include farmer ID
+                productCategory: order.productCategory // Include product category if needed
+            };
+
+            console.log('Sending accept data:', acceptData);
+
+            const acceptResponse = await axios.post(
+                'http://localhost:8081/api/user/farmerAcceptConsumerOrders',
+                acceptData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true
+                }
+            );
+
+            console.log('Accept response:', acceptResponse.data);
+
+            toast.success('Order accepted successfully!', {
+                position: "top-right",
+                autoClose: 5000,
+            });
+
+            // Update the order status locally and notify parent component
+            const updatedOrder = {
+                ...order,
+                confirmed: true,
+                paid: false // Explicitly set to false when accepting
+            };
+            onOrderUpdate(updatedOrder);
+
+        } catch (error) {
+            console.error("Error accepting order:", error);
+
+            // More detailed error logging
+            if (error.response) {
+                console.error('Error response data:', error.response.data);
+                console.error('Error response status:', error.response.status);
+                console.error('Error response headers:', error.response.headers);
+
+                toast.error(`Failed to accept order: ${error.response.data.message || error.response.statusText}`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                });
+            } else if (error.request) {
+                console.error('Error request:', error.request);
+                toast.error('Network error. Please check your connection.', {
+                    position: "top-right",
+                    autoClose: 5000,
+                });
+            } else {
+                console.error('Error message:', error.message);
+                toast.error('An unexpected error occurred.', {
+                    position: "top-right",
+                    autoClose: 5000,
+                });
+            }
+        } finally {
+            setIsAccepting(false);
+        }
+    };
+
+    // Determine shadow color based on payment status
+    const getShadowColor = () => {
+        if (order.confirmed && order.paid === false) {
+            return 'shadow-red-400/40';
+        } else if (order.confirmed && order.paid === true) {
+            return 'shadow-green-400/40';
+        } else if (order.hasOffer) {
+            return 'shadow-[#88C34E]/40';
+        }
+        return '';
     };
 
     return (
-        <div className={`bg-white shadow-md rounded-xl mb-4 overflow-hidden relative w-full ${order.hasOffer ? 'shadow-[#88C34E]/40' : ''}`}>
-            {/* Offer tag in top right */}
-            {order.hasOffer && (
-                <div
-                    className="absolute top-2 right-2 bg-[#88C34E] font-poppins-regular text-white px-2 py-1 rounded-lg cursor-pointer text-sm hover:bg-opacity-80 transition-colors"
-                    onClick={toggleOfferDetails}
-                >
-                    Offer Available
-                </div>
-            )}
+        <div className={`bg-white shadow-md rounded-xl mb-4 overflow-hidden relative w-full ${getShadowColor()}`}>
+            {/* Payment and Offer tags in top right */}
+            <div className="absolute top-2 right-2 flex gap-2">
+                {/* Payment status tag */}
+                {order.confirmed && (
+                    <div className={`px-2 py-1 rounded-lg text-sm font-poppins-regular text-white ${
+                        order.paid === false ? 'bg-red-500' : 'bg-green-500'
+                    }`}>
+                        {order.paid === false ? 'Not Paid' : 'Paid'}
+                    </div>
+                )}
+
+                {/* Offer tag */}
+                {order.hasOffer && (
+                    <div
+                        className="bg-[#88C34E] font-poppins-regular text-white px-2 py-1 rounded-lg cursor-pointer text-sm hover:bg-opacity-80 transition-colors"
+                        onClick={toggleOfferDetails}
+                    >
+                        Offer Available
+                    </div>
+                )}
+            </div>
 
             <div className="flex">
-                {/* Left section - Image (centered vertically with white background) */}
+                {/* Left section - Image */}
                 <div className="w-32 h-32 sm:w-40 sm:h-40 flex-shrink-0 bg-white flex items-center justify-center p-2">
                     {order.imageUrl ? (
                         <img
@@ -184,14 +287,21 @@ const OrderCard = ({ order }) => {
                     </div>
                 </div>
 
-                {/* Right section - Action buttons (removed border-l) */}
+                {/* Right section - Action buttons */}
                 <div className="w-24 flex-shrink-0 flex flex-col items-center mr-[20px] justify-center p-2">
-                    <button
-                        onClick={handleAccept}
-                        className="bg-[#88C34E] hover:bg-[#7AB33D] text-white font-poppins-bold px-4 py-2 rounded-lg w-full mb-2 transition-colors text-center"
-                    >
-                        Accept
-                    </button>
+                    {!order.confirmed ? (
+                        <button
+                            onClick={handleAccept}
+                            disabled={isAccepting}
+                            className="bg-[#88C34E] hover:bg-[#7AB33D] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-poppins-bold px-4 py-2 rounded-lg w-full mb-2 transition-colors text-center"
+                        >
+                            {isAccepting ? 'Accepting...' : 'Accept'}
+                        </button>
+                    ) : (
+                        <div className="bg-gray-100 text-gray-600 font-poppins-bold px-4 py-2 rounded-lg w-full mb-2 text-center">
+                            Accepted
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -253,30 +363,58 @@ const ConsumerOrderList = () => {
     const [orders, setOrders] = useState([]);
     const [filteredOrders, setFilteredOrders] = useState([]);
     const [page, setPage] = useState(1);
-    const itemsPerPage = 5; // Increased to show more orders per page
+    const itemsPerPage = 5;
     const [selectedCategory, setSelectedCategory] = useState("");
     const [categories, setCategories] = useState(["Vegetables", "Fruits", "Cereals"]);
+    const [userID, setUserID] = useState(null);
 
+    // Get userID from auth-utils
     useEffect(() => {
-        fetchOrders();
+        const getUserID = () => {
+            try {
+                const user = getWithExpiry('userID');
+                if (user) {
+                    setUserID(user);
+                } else {
+                    console.error("User not authenticated");
+                    toast.error('Please log in to view orders.', {
+                        position: "top-right",
+                        autoClose: 5000,
+                    });
+                }
+            } catch (error) {
+                console.error("Error getting user ID:", error);
+                toast.error('Authentication error. Please log in again.', {
+                    position: "top-right",
+                    autoClose: 5000,
+                });
+            }
+        };
+
+        getUserID();
     }, []);
 
+    // Initial fetch when userID is available
     useEffect(() => {
-        // Apply both search and category filters
+        if (userID) {
+            fetchAllOrdersData();
+        }
+    }, [userID]);
+
+    // Re-filter orders when orders or category changes
+    useEffect(() => {
         filterOrders();
     }, [orders, selectedCategory]);
 
     const filterOrders = (searchTerm = "") => {
         let filtered = [...orders];
 
-        // Filter by search term if provided
         if (searchTerm.trim()) {
             filtered = filtered.filter((order) =>
                 order.productName.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
 
-        // Filter by category if selected
         if (selectedCategory) {
             filtered = filtered.filter(
                 (order) => order.productCategory === selectedCategory
@@ -284,7 +422,6 @@ const ConsumerOrderList = () => {
         }
 
         setFilteredOrders(filtered);
-        // Reset to first page when filtering
         setPage(1);
     };
 
@@ -296,29 +433,75 @@ const ConsumerOrderList = () => {
         setSelectedCategory(category);
     };
 
-    const fetchOrders = async () => {
+    const handleOrderUpdate = (updatedOrder) => {
+        setOrders(prevOrders =>
+            prevOrders.map(order =>
+                order.orderID === updatedOrder.orderID ? updatedOrder : order
+            )
+        );
+    };
+
+    // Combined function to fetch all order data
+    const fetchAllOrdersData = async () => {
+        if (!userID) return;
+
         try {
-            const response = await axios.get(
-                `http://localhost:8081/api/user/viewConsumerAddOrders`
+            // First fetch the consumer orders
+            const ordersResponse = await axios.get(
+                `http://localhost:8081/api/user/viewConsumerAddOrders`,
+                {
+                    withCredentials: true
+                }
             );
 
-            const orderList = response.data.consumerAddOrderGetResponse || [];
-
-            // Filter out deleted orders
+            const orderList = ordersResponse.data.consumerAddOrderGetResponse || [];
             const activeOrders = orderList.filter(order => order.active !== false);
 
-            // Fetch images and check offers for each order
-            const ordersWithImages = await Promise.all(
+            // Then fetch farmer orders to get payment status
+            const farmerResponse = await axios.get(
+                `http://localhost:8081/api/user/viewConsumerProductOrdersByFarmerID/${userID}`,
+                {
+                    params: {
+                        active: false,
+                        confirmed: false,
+                        paid: false
+                    },
+                    withCredentials: true
+                }
+            );
+
+            const farmerOrders = farmerResponse.data.farmerConfirmConsumerOrderGetResponse || [];
+
+            // Process orders with images, offers, and payment status
+            const ordersWithAllData = await Promise.all(
                 activeOrders.map(async (order) => {
-                    let updatedOrder = { ...order, imageUrl: null, hasOffer: false };
+                    let updatedOrder = {
+                        ...order,
+                        imageUrl: null,
+                        hasOffer: false,
+                        confirmed: false,
+                        paid: null
+                    };
+
+                    // Check payment status from farmer orders
+                    const farmerOrder = farmerOrders.find(fo =>
+                        fo.consumerAddOrder && fo.consumerAddOrder.orderID === order.orderID
+                    );
+
+                    if (farmerOrder) {
+                        updatedOrder.confirmed = farmerOrder.consumerAddOrder.confirmed;
+                        updatedOrder.paid = farmerOrder.paid;
+                    }
 
                     // Check if order has offers
                     try {
                         const offerResponse = await axios.get(
-                            `http://localhost:8081/api/user/viewConsumerOffers/${order.orderID}`
+                            `http://localhost:8081/api/user/viewConsumerOffers/${order.orderID}`,
+                            {
+                                withCredentials: true
+                            }
                         );
 
-                        // If offers array exists and has items, order has an offer
                         updatedOrder.hasOffer =
                             offerResponse.data.consumerOfferGetResponse &&
                             offerResponse.data.consumerOfferGetResponse.length > 0;
@@ -331,7 +514,10 @@ const ConsumerOrderList = () => {
                         try {
                             const imageResponse = await axios.get(
                                 `http://localhost:8081/api/user/viewConsumerAddOrderImage?orderID=${order.orderID}`,
-                                { responseType: "blob" }
+                                {
+                                    responseType: "blob",
+                                    withCredentials: true
+                                }
                             );
                             updatedOrder.imageUrl = URL.createObjectURL(imageResponse.data);
                         } catch (error) {
@@ -343,16 +529,21 @@ const ConsumerOrderList = () => {
                 })
             );
 
-            setOrders(ordersWithImages);
-            setFilteredOrders(ordersWithImages);
+            setOrders(ordersWithAllData);
+            setFilteredOrders(ordersWithAllData);
 
             // Extract unique categories from orders
-            const uniqueCategories = [...new Set(ordersWithImages.map(order => order.productCategory))].filter(Boolean);
+            const uniqueCategories = [...new Set(ordersWithAllData.map(order => order.productCategory))].filter(Boolean);
             if (uniqueCategories.length > 0) {
                 setCategories(uniqueCategories);
             }
+
         } catch (error) {
-            console.error("Error fetching orders:", error);
+            console.error("Error fetching orders data:", error);
+            toast.error('Failed to fetch orders. Please try again.', {
+                position: "top-right",
+                autoClose: 5000,
+            });
         }
     };
 
@@ -365,17 +556,22 @@ const ConsumerOrderList = () => {
         page * itemsPerPage
     );
 
+    // Show loading state if userID is not available
+    if (!userID) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#88C34E]"></div>
+                    <p className="mt-4 text-gray-600 font-poppins-regular">Loading...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col h-screen pt-[100px] bg-gray-100">
             {/* Fixed Header Section */}
             <div className="flex-shrink-0">
-                {/* Header with title */}
-                {/*<div className="mb-6 text-center px-6">*/}
-                {/*    <h1 className="text-2xl font-poppins-bold text-gray-800">Available Consumer Orders</h1>*/}
-                {/*    <p className="text-gray-600">Browse and accept orders from consumers</p>*/}
-                {/*</div>*/}
-
-                {/* Filters row */}
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 px-6">
                     <CategoryDropdown
                         onCategoryChange={handleCategoryChange}
@@ -387,13 +583,14 @@ const ConsumerOrderList = () => {
 
             {/* Scrollable Cards Section */}
             <div className="flex-grow overflow-y-auto px-6">
-                {/* Order cards - vertically stacked */}
                 <div className="space-y-4 mb-6">
                     {paginatedOrders.length > 0 ? (
                         paginatedOrders.map((order) => (
                             <OrderCard
                                 key={order.orderID}
                                 order={order}
+                                onOrderUpdate={handleOrderUpdate}
+                                userID={userID}
                             />
                         ))
                     ) : (

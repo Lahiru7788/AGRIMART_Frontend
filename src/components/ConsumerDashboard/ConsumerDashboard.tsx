@@ -8,11 +8,12 @@ import Logout from "../../../public/Images/HeaderNav/icons8-logout-50.png";
 import Notifications from "../../../public/Images/HeaderNav/icons8-notifications-64.png";
 import Farmer from "../../../public/Images/HeaderNav/icons8-farmer-64.png";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useLogout } from "../Logout/Logout";
 import ConsumerNotificationSystem from "../ConsumerPages/ConsumerNotifications/ConsumerNotifications";
-import axios from "axios"; // Import the notification component
+import axios from "axios";
+import {router} from "next/client"; // Import the notification component
 
 
 const Dashboard = () => {
@@ -45,7 +46,7 @@ const Sidebar = () => {
                     <LinkItem href="/consumerAddOrder" icon={<PlusCircle size={20} />} label="Add Orders" />
                     <LinkItem href="/consumerUpdateOrder" icon={<Package2 size={20} />} label="Update Orders" />
                     <LinkItem href="/consumerViewProducts" icon={<Eye size={20} />} label="View Product" />
-                    <LinkItem href="/customers" icon={<Users size={20} />} label="Sellers" />
+                    <LinkItem href="/consumerViewSellers" icon={<Users size={20} />} label="Sellers" />
                     <LinkItem href="/sales" icon={<LineChart size={20} />} label="Purchase History" />
                     <LinkItem href="/reports" icon={<FileText size={20} />} label="Reports" />
                 </nav>
@@ -61,7 +62,7 @@ const Sidebar = () => {
 };
 
 const Topbar = () => {
-
+    const router = useRouter();
     const { handleLogout } = useLogout();
     const [userName, setUserName] = useState("User");
     const [userID, setUserID] = useState(null);
@@ -128,6 +129,10 @@ const Topbar = () => {
         }
     }, [userID]);
 
+    const handleCart = () => {
+        router.push('/consumerProductAddToCart');
+    };
+
     return (
         <header className="ml-[270px] fixed top-0 left-0 w-full bg-gray-100 flex items-center justify-between pl-4 pr-6 py-2 z-50">
             {/* Left Section */}
@@ -144,7 +149,8 @@ const Topbar = () => {
             {/* Right Section */}
             <div className="mr-[270px]">
                 <div className="flex items-center space-x-4">
-                    <button className="p-2 bg-white shadow-md rounded-full hover:invert">
+                    <button className="p-2 bg-white shadow-md rounded-full hover:invert"
+                    onClick={handleCart}>
                         <Image src={Cart} alt="Cart" width={25} height={25} />
                     </button>
                     <button

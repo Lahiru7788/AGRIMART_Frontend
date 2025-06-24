@@ -92,6 +92,116 @@ const ConsumerNotificationSystem = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    // const fetchNotifications = async () => {
+    //     try {
+    //         setLoading(true);
+    //         const userID = getWithExpiry('userID');
+    //
+    //         if (!userID) {
+    //             console.error('User ID not found');
+    //             return;
+    //         }
+    //
+    //         // Fetch from all four APIs
+    //         const apiEndpoints = [
+    //             `http://localhost:8081/api/user/viewConsumerOrdersByConsumerID/${userID}`,
+    //             `http://localhost:8081/api/user/viewConsumerSeedsOrdersByConsumerID/${userID}`,
+    //             `http://localhost:8081/api/user/viewConsumerCourseOrdersByConsumerID/${userID}`,
+    //             `http://localhost:8081/api/user/viewConsumerHireByConsumerID/${userID}`
+    //         ];
+    //
+    //         const responses = await Promise.allSettled(
+    //             apiEndpoints.map(url => axios.get<ApiResponse>(url))
+    //         );
+    //
+    //         const confirmedOrderNotifications: NotificationData[] = [];
+    //         const rejectedOrderNotifications: NotificationData[] = [];
+    //
+    //         responses.forEach((response, index) => {
+    //             if (response.status === 'fulfilled' && response.value.data) {
+    //                 const data = response.value.data;
+    //
+    //                 // Map response arrays to notification types
+    //                 const responseKeys: (keyof ApiResponse)[] = [
+    //                     'consumerOrderGetResponse',
+    //                     'consumerSeedsOrderGetResponse',
+    //                     'consumerCourseOrderGetResponse',
+    //                     'consumerHireGetResponse'
+    //                 ];
+    //
+    //                 const orderTypes = [
+    //                     'Farmer',
+    //                     'Seeds & Fertilizer Seller',
+    //                     'Course',
+    //                     'Trainer'
+    //                 ];
+    //
+    //                 const orders = data[responseKeys[index]];
+    //
+    //                 if (orders && Array.isArray(orders)) {
+    //                     orders.forEach(order => {
+    //                         // Check if this order belongs to the current consumer
+    //                         const consumerUserID = order.user?.userID;
+    //
+    //                         if (consumerUserID && consumerUserID.toString() === userID.toString() &&
+    //                             order.active === true && order.addedToCart === false  &&
+    //                             order.removedFromCart === false &&
+    //                             (order.confirmed === true || order.rejected === true)) {
+    //
+    //                             const notificationData: NotificationData = {
+    //                                 id: `${orderTypes[index]}-${order.orderID}`,
+    //                                 type: orderTypes[index],
+    //                                 orderID: order.orderID,
+    //                                 productName: order.productName,
+    //                                 productID: order.farmerProduct.productID,
+    //                                 providerName: order.farmerProduct?.user
+    //                                     ? `${order.farmerProduct.user.firstName} ${order.farmerProduct.user.lastName}`
+    //                                     : 'Provider Name',
+    //                                 providerEmail: order.farmerProduct?.user?.userEmail || 'Provider Email',
+    //                                 quantity: order.requiredQuantity,
+    //                                 price: order.price,
+    //                                 addedDate: new Date(order.addedDate),
+    //                                 confirmed: order.confirmed,
+    //                                 paid: order.paid,
+    //                                 rejected: order.rejected,
+    //                                 description: order.description,
+    //                                 category: order.farmerProduct?.productCategory || order.productCategory || 'N/A',
+    //                                 rawOrder: order
+    //                             };
+    //
+    //                             // Filter for confirmed orders
+    //                             if (order.confirmed === true) {
+    //                                 confirmedOrderNotifications.push(notificationData);
+    //                             }
+    //
+    //                             // Filter for rejected orders
+    //                             if (order.rejected === true) {
+    //                                 rejectedOrderNotifications.push(notificationData);
+    //                             }
+    //                         }
+    //                     });
+    //                 }
+    //             }
+    //         });
+    //
+    //         // Sort notifications by date (newest first)
+    //         confirmedOrderNotifications.sort((a, b) => b.addedDate.getTime() - a.addedDate.getTime());
+    //         rejectedOrderNotifications.sort((a, b) => b.addedDate.getTime() - a.addedDate.getTime());
+    //
+    //         setConfirmedOrderNotifications(confirmedOrderNotifications);
+    //         setRejectedOrderNotifications(rejectedOrderNotifications);
+    //
+    //         // Total unread count (both confirmed and rejected orders)
+    //         const totalUnread = confirmedOrderNotifications.length + rejectedOrderNotifications.length;
+    //         setUnreadCount(totalUnread);
+    //
+    //     } catch (error) {
+    //         console.error('Error fetching notifications:', error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
     const fetchNotifications = async () => {
         try {
             setLoading(true);
@@ -148,16 +258,73 @@ const ConsumerNotificationSystem = () => {
                                 order.removedFromCart === false &&
                                 (order.confirmed === true || order.rejected === true)) {
 
+                                // Determine which product object to use based on order type
+                                let productObject;
+                                let productID;
+                                let providerName;
+                                let providerEmail;
+                                let category;
+
+                                switch (orderTypes[index]) {
+                                    case 'Farmer':
+                                        productObject = order.farmerProduct;
+                                        productID = order.farmerProduct?.productID;
+                                        providerName = order.farmerProduct?.user
+                                            ? `${order.farmerProduct.user.firstName} ${order.farmerProduct.user.lastName}`
+                                            : 'Provider Name';
+                                        providerEmail = order.farmerProduct?.user?.userEmail || 'Provider Email';
+                                        category = order.farmerProduct?.productCategory || 'N/A';
+                                        break;
+
+                                    case 'Seeds & Fertilizer Seller':
+                                        productObject = order.sfProduct;
+                                        productID = order.sfProduct?.productID;
+                                        providerName = order.sfProduct?.user
+                                            ? `${order.sfProduct.user.firstName} ${order.sfProduct.user.lastName}`
+                                            : 'Provider Name';
+                                        providerEmail = order.sfProduct?.user?.userEmail || 'Provider Email';
+                                        category = order.sfProduct?.productCategory || 'N/A';
+                                        break;
+
+                                    // case 'Course':
+                                    //     productObject = order.courseProduct || order.course;
+                                    //     productID = order.courseProduct?.courseID || order.course?.courseID;
+                                    //     providerName = order.courseProduct?.user || order.course?.user
+                                    //         ? `${(order.courseProduct?.user || order.course?.user)?.firstName} ${(order.courseProduct?.user || order.course?.user)?.lastName}`
+                                    //         : 'Provider Name';
+                                    //     providerEmail = (order.courseProduct?.user || order.course?.user)?.userEmail || 'Provider Email';
+                                    //     category = order.courseProduct?.courseCategory || order.course?.courseCategory || 'N/A';
+                                    //     break;
+
+                                    // case 'Trainer':
+                                    //     productObject = order.trainerProduct || order.trainer;
+                                    //     productID = order.trainerProduct?.trainerID || order.trainer?.trainerID;
+                                    //     providerName = order.trainerProduct?.user || order.trainer?.user
+                                    //         ? `${(order.trainerProduct?.user || order.trainer?.user)?.firstName} ${(order.trainerProduct?.user || order.trainer?.user)?.lastName}`
+                                    //         : 'Provider Name';
+                                    //     providerEmail = (order.trainerProduct?.user || order.trainer?.user)?.userEmail || 'Provider Email';
+                                    //     category = order.trainerProduct?.trainerCategory || order.trainer?.trainerCategory || 'N/A';
+                                    //     break;
+
+                                    default:
+                                        // Fallback to farmerProduct for backward compatibility
+                                        productObject = order.farmerProduct;
+                                        productID = order.farmerProduct?.productID;
+                                        providerName = order.farmerProduct?.user
+                                            ? `${order.farmerProduct.user.firstName} ${order.farmerProduct.user.lastName}`
+                                            : 'Provider Name';
+                                        providerEmail = order.farmerProduct?.user?.userEmail || 'Provider Email';
+                                        category = order.farmerProduct?.productCategory || order.productCategory || 'N/A';
+                                }
+
                                 const notificationData: NotificationData = {
                                     id: `${orderTypes[index]}-${order.orderID}`,
                                     type: orderTypes[index],
                                     orderID: order.orderID,
                                     productName: order.productName,
-                                    productID: order.farmerProduct.productID,
-                                    providerName: order.farmerProduct?.user
-                                        ? `${order.farmerProduct.user.firstName} ${order.farmerProduct.user.lastName}`
-                                        : 'Provider Name',
-                                    providerEmail: order.farmerProduct?.user?.userEmail || 'Provider Email',
+                                    productID: productID,
+                                    providerName: providerName,
+                                    providerEmail: providerEmail,
                                     quantity: order.requiredQuantity,
                                     price: order.price,
                                     addedDate: new Date(order.addedDate),
@@ -165,7 +332,7 @@ const ConsumerNotificationSystem = () => {
                                     paid: order.paid,
                                     rejected: order.rejected,
                                     description: order.description,
-                                    category: order.farmerProduct?.productCategory || order.productCategory || 'N/A',
+                                    category: category,
                                     rawOrder: order
                                 };
 
@@ -207,13 +374,50 @@ const ConsumerNotificationSystem = () => {
     };
 
     const handleNotificationClick = (notification: NotificationData) => {
+        // Determine the appropriate product object and ID based on notification type
+        let productObject;
+        let productID;
+        let routePage;
+
+        switch (notification.type) {
+            case 'Farmer':
+                productObject = notification.rawOrder.farmerProduct;
+                productID = notification.rawOrder.farmerProduct?.productID;
+                routePage = '/consumerViewProductDetailsPage';
+                break;
+
+            case 'Seeds & Fertilizer Seller':
+                productObject = notification.rawOrder.sfProduct;
+                productID = notification.rawOrder.sfProduct?.productID;
+                routePage = '/consumerViewSFProductDetailsPage'; // Assuming different page for SF products
+                break;
+
+            // case 'Course':
+            //     productObject = notification.rawOrder.courseProduct || notification.rawOrder.course;
+            //     productID = notification.rawOrder.courseProduct?.courseID || notification.rawOrder.course?.courseID;
+            //     routePage = '/consumerViewCourseDetailsPage'; // Assuming different page for courses
+            //     break;
+            //
+            // case 'Trainer':
+            //     productObject = notification.rawOrder.trainerProduct || notification.rawOrder.trainer;
+            //     productID = notification.rawOrder.trainerProduct?.trainerID || notification.rawOrder.trainer?.trainerID;
+            //     routePage = '/consumerViewTrainerDetailsPage'; // Assuming different page for trainers
+            //     break;
+
+            default:
+                // Fallback to farmer product for backward compatibility
+                productObject = notification.rawOrder.farmerProduct;
+                productID = notification.rawOrder.farmerProduct?.productID;
+                routePage = '/consumerViewProductDetailsPage';
+        }
+
         // Format the order data for the consumer order view
         const orderForView = {
             id: notification.id,
             orderID: notification.orderID,
             type: notification.type,
             productName: notification.productName,
-            productID: notification.productID,
+            productID: productID,
             category: notification.category,
             providerName: notification.providerName,
             providerEmail: notification.providerEmail,
@@ -223,12 +427,13 @@ const ConsumerNotificationSystem = () => {
             description: notification.description,
             confirmed: notification.confirmed,
             rejected: notification.rejected,
-            rawOrder: notification.rawOrder
+            rawOrder: notification.rawOrder,
+            productObject: productObject // Include the specific product object
         };
 
-        // Navigate to consumer order view page with both orderDetails and productID
+        // Navigate to the appropriate consumer order view page with both orderDetails and productID
         const encodedOrder = encodeURIComponent(JSON.stringify(orderForView));
-        router.push(`/consumerViewProductDetailsPage?orderDetails=${encodedOrder}&productID=${notification.productID}`);
+        router.push(`${routePage}?orderDetails=${encodedOrder}&productID=${productID}`);
 
         // Close the notification panel
         setIsOpen(false);
